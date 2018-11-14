@@ -1,5 +1,5 @@
 const ytdl = require('ytdl-core');
-var buildresponse = require('../helpers/response');
+var res_helper = require('../helpers/response');
 
 
 class play {
@@ -14,7 +14,10 @@ class play {
         var voiceChannel = this.req.member.voiceChannel;
 
         if (!voiceChannel) {
-            return response(buildresponse('text', 'Join a voice channel'));
+            return response(
+                res_helper.build(
+                    res_helper.types.text, 'Join a voice channel')
+                );
         }
 
         voiceChannel.join()

@@ -1,17 +1,32 @@
 
+class response_helper {
 
-/**
- * response - Builds up the response which is later formatted.
- * Just text at the moment and very loosely typed
- * @param {String} type 
- * @param {String} message 
- */
-function response(type, message) {
-	const res = {
-		type: type,
-		message: message,
-	};
-	return res;
+	constructor() {
+		this.types = {text:'text', code:'code'};
+	}
+
+	/**
+	 * Builds message from given type
+	 * only supports types in this.types
+	 * @param {types} type 
+	 * @param {string} message - might change into object at later date 
+	 */
+	build(type, message) {
+		if (!Object.keys(this.types).includes(type)) { 
+			return { type: 'text', message: message};
+		}
+
+		const res = {
+			type: type,
+		};
+
+		res.message = this[type](message);
+		return res;
+	}
+
+	text(message) { return message; }
+	code(message) { return '```'+message+'```'; }
+
 }
 
-module.exports = response;
+module.exports = new response_helper();

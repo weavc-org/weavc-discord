@@ -1,5 +1,5 @@
 
-var buildresponse = require('../helpers/response');
+var res_helper = require('../helpers/response');
 
 class github {
 
@@ -10,7 +10,10 @@ class github {
     }
 
     go(response) {
-        return response(buildresponse('text', 'https://github.com/ChrisWeaver1/discord-bot'));
+        return response(
+            res_helper.build(
+                res_helper.types.text, 'https://github.com/ChrisWeaver1/discord-bot')
+            );
     }
 }
 module.exports = github;

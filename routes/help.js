@@ -1,4 +1,5 @@
-var buildresponse = require('../helpers/response');
+var res_helper = require('../helpers/response');
+var config = require('../config');
 
 class help {
 
@@ -9,7 +10,18 @@ class help {
     }
 
     go(response) {
-        return response(buildresponse('text', 'help'));
+        var help_response =
+            "Prefixs: \n"+ config.prefixs +"\n\n"+
+            "Commands:\n"+
+            "hello (hi, hey, hoi) - Says hello back\n"+
+            "github (git) - Prints the github repo for this bot\n" +
+            "play <url> - plays audio from linked youtube video to your current voice channel\n"+
+            "help (-h) - responds with this help page\n";
+
+        return response(
+            res_helper.build(
+                res_helper.types.code, help_response)
+            );
     }
 }
 module.exports = help;

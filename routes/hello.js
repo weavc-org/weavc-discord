@@ -1,5 +1,5 @@
 
-var buildresponse = require('../helpers/response');
+var  res_helper = require('../helpers/response');
 
 class hello {
 
@@ -10,7 +10,10 @@ class hello {
     }
 
     go(response) {
-        return response(buildresponse('text', 'hello'));
+        return response(
+            res_helper.build(
+                res_helper.types.text, 'Hello ^-^')
+            );
     }
 }
 module.exports = hello;
