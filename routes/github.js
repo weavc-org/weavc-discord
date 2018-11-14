@@ -1,6 +1,7 @@
+
 var buildresponse = require('../helpers/response');
 
-class help {
+class github {
 
     constructor(message, req, client) {
         this.message = message;
@@ -9,7 +10,7 @@ class help {
     }
 
     go(response) {
-        return response(buildresponse('text', 'help'));
+        return response(buildresponse('text', 'https://github.com/ChrisWeaver1/discord-bot'));
     }
 }
-module.exports = help;
+module.exports = github;

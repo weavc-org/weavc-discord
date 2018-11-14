@@ -3,11 +3,13 @@ var buildresponse = require('../helpers/response');
 
 class hello {
 
-    constructor() {
-
+    constructor(message, req, client) {
+        this.message = message;
+        this.req = req;
+        this.client = client;
     }
 
-    go(message, response) {
+    go(response) {
         return response(buildresponse('text', 'hello'));
     }
 }
