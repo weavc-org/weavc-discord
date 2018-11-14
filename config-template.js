@@ -1,4 +1,6 @@
 var config = {
-    token: ''
+    setup: false,
+    token: '',
+    prefixs: []
 }
-module.exports = config;asdfsdaf
+module.exports = config;

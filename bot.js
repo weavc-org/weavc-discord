@@ -1,22 +1,22 @@
 const Discord = require('discord.js');
 const config = require('./config');
+const router = require('./helpers/router');
 const client = new Discord.Client();
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
+	console.log(`Logged in as ${client.user.tag}!`);
 });
 
 client.on('message', msg => {
-  if (msg.content === '!play') {
-    const voiceChannel = msg.member.voiceChannel;
 
-    if (!voiceChannel) {
-      return msg.reply('Join a voice channel')
-    }
+	var message = msg.content.split(' ');
+	let prefix = message.shift();
 
-    voiceChannel.join();
+	if (!config.prefixs.includes(prefix)) return;
 
-  } 
+	router(message, (response) => {
+		msg.reply(response.message);
+	});
 });
 
 client.login(config.token);
