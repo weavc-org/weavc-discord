@@ -16,6 +16,7 @@ class help {
             "hello (hi, hey, hoi) - Says hello back\n"+
             "github (git) - Prints the github repo for this bot\n" +
             "play <url> - plays audio from linked youtube video to your current voice channel\n"+
+            "play stop - leaves your current voice channel and stops playing music\n"+
             "help (-h) - responds with this help page\n";
 
         return response(

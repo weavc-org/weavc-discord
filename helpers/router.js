@@ -33,6 +33,7 @@ function router(message, req, client, res) {
 		}
 	}
 
+	// if there is no route found => goes to index [0]
 	if (route === undefined) route = new routes[0].route(message, req, client);
 
 	route.go((response) => {

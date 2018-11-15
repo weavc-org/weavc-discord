@@ -1,5 +1,6 @@
 const ytdl = require('ytdl-core');
 var res_helper = require('../helpers/response');
+var class_router = require('../helpers/class_router');
 
 
 class play {
@@ -8,9 +9,37 @@ class play {
         this.message = message;
         this.req = req;
         this.client = client;
+        this.routes = [
+            { name: 'play', alias:[], match_case: false },
+            { name: 'stop', alias:['stop'], match_case: false }
+        ];
     }
 
     go(response) {
+        var route = class_router(this.routes, this.message[1]);
+        this[route](response);
+    }
+
+    stop(response) {
+        var voiceChannel = this.req.member.voiceChannel;
+
+        if (!voiceChannel) {
+            return response(
+                res_helper.build(
+                    res_helper.types.text, 'Join a voice channel')
+                );
+        }
+
+        voiceChannel.leave();
+
+        return response(
+            res_helper.build(
+                res_helper.types.text, 'Okay')
+            );
+
+    }
+
+    play(response) {
         var voiceChannel = this.req.member.voiceChannel;
 
         if (!voiceChannel) {
@@ -31,8 +60,7 @@ class play {
                 dispatcher.on('end', (a) => { voiceChannel.leave(); console.log(a)});
             })
             .catch(console.error);
-
-
     }
+
 }
 module.exports = play;
