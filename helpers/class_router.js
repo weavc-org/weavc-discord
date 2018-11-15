@@ -17,11 +17,11 @@ function class_router(routes, command) {
 		}
 
 		if (routes[i].alias.includes(command)) {
-			return routes[i];
+			return routes[i].name;
 		}
 	}
 
-	return routes[0];
+	return routes[0].name;
  }
 
 module.exports = class_router;
