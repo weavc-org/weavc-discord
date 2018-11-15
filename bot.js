@@ -16,7 +16,15 @@ client.on('message', msg => {
 	if (!config.prefixs.includes(prefix)) return;
 	
 	router(message, msg, client, (response) => {
-		msg.reply(response.message);
+		if (response.send == 'reply') {
+			msg.reply(response.message);
+		}
+		else if (response.send == 'send') {
+			msg.channel.send(response.message);
+		}
+		else {
+			msg.reply(response.message);
+		}
 	});
 });
 
