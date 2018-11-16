@@ -21,17 +21,13 @@ class play {
     }
 
     stop(response) {
-        var voiceChannel = this.req.member.voiceChannel;
-
-        if (!voiceChannel) {
-            return response(
-                res_helper.build(
-                    res_helper.types.text, 'Join a voice channel')
-                );
-        }
-
-        voiceChannel.leave();
-
+        var channels = this.req.member.guild.channels;
+        channels.forEach((channel) => {
+            if (channel.type == 'voice') {
+                channel.leave();
+            }
+        });
+        
         return response(
             res_helper.build(
                 res_helper.types.text, 'Okay')
