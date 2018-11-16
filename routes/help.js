@@ -7,9 +7,10 @@ class help {
         this.message = message;
         this.req = req;
         this.client = client;
+        this.routes = [];
     }
 
-    go(response) {
+    default(response) {
         // var help_response =
         //     "Prefixs: \n"+ config.prefixs +"\n\n"+
         //     "Commands:\n"+

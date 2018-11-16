@@ -7,9 +7,10 @@ class github {
         this.message = message;
         this.req = req;
         this.client = client;
+        this.routes = [];
     }
 
-    go(response) {
+    default(response) {
         return response(
             res_helper.build(
                 res_helper.types.text, 'https://github.com/ChrisWeaver1/discord-bot')
