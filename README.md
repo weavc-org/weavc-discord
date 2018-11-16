@@ -17,3 +17,4 @@ In order of current priority
 1. More/extended Features/examples
 1. Database handling (SQL, SQLite, MongoDB)
 1. Turn it into an npm package?
+1. Documentation
