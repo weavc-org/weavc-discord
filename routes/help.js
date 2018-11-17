@@ -21,12 +21,15 @@ class help {
                 name: this.client.user.username,
                 icon_url: this.client.user.avatarURL
             },
-            title: "(( -+-+-+- { Help } -+-+-+- ))",
-            description: "Prefixs: " + config.prefixs.toString().replace(',', ', ') +
-                            "\n**(( -+-+-+- { Commands } -+-+-+- ))**",
+            title: "(( -+-+-+- { Help 1 } -+-+-+- ))",
+            description: "Help page, a list of commands you can use. The reactions below can be used to scroll through pages!",
             fields: [
             {
-                name: "help (-h)",
+                name: "Prefixs",
+                value: config.prefixs.toString().replace(',', ', ')
+            },
+            {
+                name: "help (-h) <#>",
                 value: "Prints this very help page!"
             },
             {
@@ -38,9 +41,8 @@ class help {
                 value: "I'm open source, you can get a link to the repo here"
             },
             {
-                name: "play",
-                value: "<url>: Plays audio from the linked youtube video in your current voice channel\n"+
-                        "stop: Stops playing music and leaves the channel",
+                name: "play [stop] | [<url>]",
+                value: "Use play to have me join your voice channel and play you some youtube audio.",
             }
             ],
             timestamp: new Date(),
@@ -62,28 +64,8 @@ class help {
                 name: this.client.user.username,
                 icon_url: this.client.user.avatarURL
             },
-            title: "(( -+-+-+- { Help } -+-+-+- ))",
-            description: "Prefixs: " + config.prefixs.toString().replace(',', ', ') +
-                            "\n**(( -+-+-+- { Commands } -+-+-+- ))**",
-            fields: [
-            {
-                name: "help (-h)",
-                value: "Prints this very help page!"
-            },
-            {
-                name: "hello (hi, hey, hoi)",
-                value: "Says hello"
-            },
-            {
-                name: "github (git)",
-                value: "I'm open source, you can get a link to the repo here"
-            },
-            {
-                name: "play",
-                value: "<url>: Plays audio from the linked youtube video in your current voice channel\n"+
-                        "stop: Stops playing music and leaves the channel",
-            }
-            ],
+            title: "(( -+-+-+- { Help 2 } -+-+-+- ))",
+            description: "uhhhh, I have limited functionality at the moment and nothing more to tell you...",
             timestamp: new Date(),
             footer: {
                 text: "Requested by: " + this.req.author.username + "#" + this.req.author.discriminator + " | From: Help | Page: 2"
@@ -103,28 +85,8 @@ class help {
                 name: this.client.user.username,
                 icon_url: this.client.user.avatarURL
             },
-            title: "(( -+-+-+- { Help } -+-+-+- ))",
-            description: "Prefixs: " + config.prefixs.toString().replace(',', ', ') +
-                            "\n**(( -+-+-+- { Commands } -+-+-+- ))**",
-            fields: [
-            {
-                name: "help (-h)",
-                value: "Prints this very help page!"
-            },
-            {
-                name: "hello (hi, hey, hoi)",
-                value: "Says hello"
-            },
-            {
-                name: "github (git)",
-                value: "I'm open source, you can get a link to the repo here"
-            },
-            {
-                name: "play",
-                value: "<url>: Plays audio from the linked youtube video in your current voice channel\n"+
-                        "stop: Stops playing music and leaves the channel",
-            }
-            ],
+            title: "(( -+-+-+- { Help 3 } -+-+-+- ))",
+            description: "Hi",
             timestamp: new Date(),
             footer: {
                 text: "Requested by: " + this.req.author.username + "#" + this.req.author.discriminator + " | From: Help | Page: 3"
