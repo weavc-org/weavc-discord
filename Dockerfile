@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN apt-get install python make g++ gcc node-typescript
+RUN apt-get install python make g++ gcc
 RUN npm install
 
 COPY . .

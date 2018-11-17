@@ -4,7 +4,7 @@
   "description": "",
   "main": "bot.js",
   "scripts": {
-    "start": "tsc -p . && node src/bot.js",
+    "start": "./node_modules/.bin/tsc -p . && node src/bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
