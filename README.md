@@ -12,6 +12,7 @@ In order of current priority
 1. ~~Command: 'play stop' should leave voice channel regardless of if the user is in the channel~~
 1. ~~Work out class routing, make it an extension of the router~~
 1. ~~Paging on embeds with reactions~~
+1. Check play URL - not sure if something weird would be possible with it
 1. Better embed creation
 1. Setup config script - entering keys and values etc
 1. More/extended Features/examples
