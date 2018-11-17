@@ -3,7 +3,7 @@ class response_helper {
 
 	constructor() {
 		this.types = { text:'text', code:'code', embed:'embed' };
-		this.send_types = { send: 'send', reply: 'reply' };
+		this.send_types = { send: 'send', reply: 'reply', page: 'page' };
 
 		this.embed_model = {};
 	}
@@ -16,7 +16,7 @@ class response_helper {
 	 */
 	build(type, message, sendtype) {
 		var send_type = 'reply';
-		if (!Object.keys(this.send_types).includes(sendtype)) { 
+		if (Object.keys(this.send_types).includes(sendtype)) { 
 			send_type = sendtype;
 		}
 
