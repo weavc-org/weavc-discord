@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",                          
+    "module": "commonjs",
+    "listFiles": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "exclude":[
+    "node_modules"
+  ]
+}
