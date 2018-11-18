@@ -1,6 +1,7 @@
 import { IncomingMessage } from "http";
 import { ResponseModel, ResponseTypes } from "./helpers/response";
 
+
 const config = require('./config');
 import { Pager } from './helpers/pager';
 import { Router } from './helpers/router';
@@ -14,7 +15,6 @@ client.on('ready', () => {
 });
 
 client.on('message', (msg: Message) => {
-
 	var message = msg.content.split(' ');
 	let prefix = message.shift();
 
@@ -28,3 +28,7 @@ client.on('message', (msg: Message) => {
 });
 
 client.login(config.token);
+
+process.on('uncaughtException', function(err) {
+  console.log('Caught exception: ' + err.toString());
+});

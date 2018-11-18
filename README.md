@@ -22,7 +22,7 @@ cp src/config-template.json src/config.json
 npm start
 ```
 
-With Docker (Do all steps above first) - Not tested yet with typescript
+With Docker (Do all steps above first) - good for getting around the dependancy issues mentioned above.
 ```
 docker build . -t discord-bot:latest
 docker run discord-bot <&>

@@ -29,7 +29,7 @@ export class Play implements iRouteClass {
             return response(
                 Build('Join a voice channel first!', ContentTypes.text, ResponseTypes.reply));
         }
-
+        console.log(context.message);
         voiceChannel.join()
             .then((connection: VoiceConnection) => {
                 var stream = ytdl(context.message[1], { filter: 'audioonly' });
