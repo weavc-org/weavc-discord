@@ -1,17 +1,21 @@
 import { IncomingMessage } from "http";
 import { ResponseModel, ResponseTypes } from "./helpers/response";
+import { ConfigModel, CreateConfig } from './helpers/setup';
 
-
-const config = require('./config');
 import { Pager } from './helpers/pager';
 import { Router } from './helpers/router';
 
-const Discord = require('discord.js');
 import { Message } from 'discord.js';
+const Discord = require('discord.js');
 const client = new Discord.Client();
 
 client.on('ready', () => {
+	config.prefixs.push('<@'+client.user.id+'>');
 	console.log(`Logged in as ${client.user.tag}!`);
+
+	process.on('uncaughtException', function(err) {
+		console.log('Caught exception: ' + err.toString());
+	});
 });
 
 client.on('message', (msg: Message) => {
@@ -27,8 +31,5 @@ client.on('message', (msg: Message) => {
 	});
 });
 
+var config: ConfigModel = require('./config');
 client.login(config.token);
-
-process.on('uncaughtException', function(err) {
-  console.log('Caught exception: ' + err.toString());
-});
