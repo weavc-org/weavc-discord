@@ -1,7 +1,8 @@
 import { Build, ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel, RichEmbed } from 'discord.js';
-var config = require('../config');
+import { Config, ConfigModel } from '../helpers/config';
+var config = new Config();
 
 export class Help implements iRouteClass {
     Routes: iRoute[] =[
@@ -29,7 +30,7 @@ export class Help implements iRouteClass {
             .setAuthor(context.client.user.username, context.client.user.avatarURL)
             .setTitle("(( -+-+-+- { Help 1 } -+-+-+- ))") 
             .setDescription("Help page, a list of commands you can use. The reactions below can be used to scroll through pages!")
-            .addField("Prefixs", config.prefixs.toString().replace(',', ', '))
+            .addField("Prefixs", config.prefixes.toString().replace(',', ', '))
             .addField("help (-h) <#>", "Prints this very help page!")
             .addField("hello (hi, hey, hoi)", "Says hello")
             .addField("github (git)", "Link to find me on GitHub")
