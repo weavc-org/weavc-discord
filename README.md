@@ -36,9 +36,10 @@ In order of current priority
 1. ~~Work out class routing, make it an extension of the router~~
 1. ~~Paging on embeds with reactions~~
 1. ~~Convert to typescript. Interfaces and models would be useful~~
+1. ~~Config class that uses fs to get & create Config~~
 1. ~~Better embed creation~~
+1. ~~Private fork of my own project?~~ Thanks: http://deanmalone.net/post/how-to-fork-your-own-repo-on-github/
 1. Setup config script - entering keys and values etc
-        - Config class that uses fs to get Config, can cru the Config document
 1. Implement Better error handling & filtering out incorrect values
 1. More/extended Features/examples
 1. Database handling (SQL, SQLite, MongoDB)
