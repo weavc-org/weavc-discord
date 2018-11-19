@@ -40,6 +40,7 @@ In order of current priority
 1. ~~Better embed creation~~
 1. ~~Private fork of my own project?~~ Thanks: http://deanmalone.net/post/how-to-fork-your-own-repo-on-github/
 1. Setup config script - entering keys and values etc
+1. Split models into their own folder?
 1. Implement Better error handling & filtering out incorrect values
 1. More/extended Features/examples
 1. Database handling (SQL, SQLite, MongoDB)
