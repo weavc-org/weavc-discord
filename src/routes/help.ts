@@ -5,10 +5,7 @@ import { Config, ConfigModel } from '../helpers/config';
 var config = new Config();
 
 export class Help implements iRouteClass {
-    Routes: iRoute[] =[
-        { name: 'help2', alias:['2'], matchcase: false, route: this.help2 },
-        { name: 'help3', alias:['3'], matchcase: false, route: this.help3 }
-    ];
+    Routes: iRoute[] =[];
 
     message: String[];
     req: Message;
@@ -25,6 +22,12 @@ export class Help implements iRouteClass {
     }
 
     default(context: Help, response: Function) {
+
+        var page = context.message[1];
+        if (page == undefined) {
+            page = '1';
+        }
+
         var HelpPage = new RichEmbed()
             .setColor(0xb5130f)
             .setAuthor(context.client.user.username, context.client.user.avatarURL)
@@ -38,36 +41,26 @@ export class Help implements iRouteClass {
             .setTimestamp(new Date())
             .setFooter("Requested by: " + context.req.author.username + "#" + context.req.author.discriminator + " | From: Help | Page: 1");
 
-        return response(
-            Build('', ContentTypes.embed, ResponseTypes.page, HelpPage)
-        )
-    }
-
-    help2(context: Help, response: Function) {
-        var HelpPage = new RichEmbed()
+        var HelpPage2 = new RichEmbed()
             .setColor(0xb5130f)
             .setAuthor(context.client.user.username, context.client.user.avatarURL)
             .setTitle("(( -+-+-+- { Help 2 } -+-+-+- ))") 
-            .setDescription("uhhhh, I have limited functionality at the moment and nothing more to tell you...")
+            .addField("nhentai (n, nh) [gallery id] | <random>", "Share your favourite nhentai doujinshis")
             .setTimestamp(new Date())
             .setFooter("Requested by: " + context.req.author.username + "#" + context.req.author.discriminator + " | From: Help | Page: 2");
 
-        return response(
-            Build('', ContentTypes.embed, ResponseTypes.page, HelpPage)
-        )
-    }
-
-    help3(context: Help, response: Function) {
-        var HelpPage = new RichEmbed()
+        var HelpPage3 = new RichEmbed()
             .setColor(0xb5130f)
             .setAuthor(context.client.user.username, context.client.user.avatarURL)
             .setTitle("(( -+-+-+- { Help 3 } -+-+-+- ))") 
             .setDescription("meow")
             .setTimestamp(new Date())
             .setFooter("Requested by: " + context.req.author.username + "#" + context.req.author.discriminator + " | From: Help | Page: 3");
-context
+
+        var embeds: Array<RichEmbed> = [HelpPage, HelpPage2, HelpPage3]
+
         return response(
-            Build('', ContentTypes.embed, ResponseTypes.page, HelpPage)
+            Build(page, ContentTypes.embed, ResponseTypes.page, embeds)
         )
     }
 }

@@ -15,33 +15,44 @@ export function Pager(msg: Message, client: Client, response: ResponseModel) {
     
     var m = msg.content.split(' ');
 	let prefix = m.shift();
-    msg.channel.send(response.embed)
-        .then(function (message: Message) {
+    var page = 1;
 
+    var startPage = parseInt(response.message);
+    if (startPage != NaN && startPage >= 1 && startPage <= response.embeds.length) {
+        page = startPage;
+    }
+
+    msg.channel.send(response.embeds[page-1])
+        .then(function (message: Message) {
+            
             message.react("⬅").then((r) => {
                 message.react("➡");
             });
 
-            var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == msg.author.id;
-            var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == msg.author.id;
+            var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == msg.author.id && message.id == reaction.message.id;
+            var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == msg.author.id && message.id == reaction.message.id;
 
-            var back = message.createReactionCollector(backreact, { time: 60000 });
-            var forward = message.createReactionCollector(forwardreact, { time: 60000 });
+            var back = message.createReactionCollector(backreact, { time: 600000 });
+            var forward = message.createReactionCollector(forwardreact, { time: 600000 });
 
             back.on('collect', (r) => {
-                var model: iParsedFooter = parsefooter(message.embeds[0].footer.text);
-                m[1] = (parseInt(model.page) -1)+'';
-                Router(m, msg, client, (response: ResponseModel) => {
-                    message.edit(response.embed);
-                })
+                page--;
+                if (page <= response.embeds.length && page >= 1) { 
+                    message.edit(response.embeds[page-1]);
+                }
+                else {
+                    page++;
+                }
             })
 
             forward.on('collect', (r) => {
-                var model = parsefooter(message.embeds[0].footer.text);
-                m[1] = (parseInt(model.page) +1)+'';
-                Router(m, msg, client, (response: ResponseModel) => {
-                    message.edit(response.embed);
-                })
+                page++;
+                if (page <= response.embeds.length && page >= 1) { 
+                    message.edit(response.embeds[page-1]);
+                }
+                else {
+                    page--;
+                }
             })
 
             client.on('messageReactionRemove', (reaction, user) => { 

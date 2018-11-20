@@ -9,12 +9,12 @@ import { RichEmbed, RichEmbedOptions } from 'discord.js';
  * @param {RichEmbed} embed 
  * @returns {ResponseModel}
  */
-export function Build(message: String, contentType: ContentTypes = ContentTypes.text, responseType: ResponseTypes = ResponseTypes.reply, embed: RichEmbed = null) {
+export function Build(message: String, contentType: ContentTypes = ContentTypes.text, responseType: ResponseTypes = ResponseTypes.reply, embeds: Array<RichEmbed> = null) {
 	var model: ResponseModel = {
 		message: message,
 		contentType: contentType,
 		responsetype: responseType,
-		embed: embed
+		embeds: embeds
 	};
 	return model;
 }
@@ -35,5 +35,5 @@ export class ResponseModel {
 	message: any;
 	responsetype: ResponseTypes;
 	contentType: ContentTypes;
-	embed?: RichEmbed;
+	embeds?: Array<RichEmbed>;
 }
