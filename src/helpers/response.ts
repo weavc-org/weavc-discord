@@ -1,5 +1,6 @@
 
 import { RichEmbed, RichEmbedOptions } from 'discord.js';
+import { PagingOptions } from './pager';
 
 /**
  * @enum ContentTypes
@@ -35,7 +36,7 @@ export class ResponseModel {
 	responsetype: ResponseTypes;
 	contentType: ContentTypes;
 	embeds?: Array<RichEmbed>;
-	pagingoptions? : any;
+	pagingoptions?: PagingOptions;
 
 	/**
 	 * @description

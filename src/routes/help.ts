@@ -2,6 +2,7 @@ import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response'
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
+import { PagingOptions } from '../helpers/pager';
 var config = new Config();
 
 export class Help implements iRouteClass {
@@ -58,6 +59,15 @@ export class Help implements iRouteClass {
             .setFooter("Requested by: " + context.req.author.username + "#" + context.req.author.discriminator + " | From: Help | Page: 3");
 
         var embeds: Array<RichEmbed> = [HelpPage, HelpPage2, HelpPage3]
+
+        var res = new ResponseModel(page, ContentTypes.embed, ResponseTypes.page, embeds);
+        res.pagingoptions = new PagingOptions()
+        res.pagingoptions.allowallreactions=true;
+        res.pagingoptions.timeout=100000;
+        res.pagingoptions.reactionremoval=true;
+        res.pagingoptions.startpage=1;
+        res.pagingoptions.timeoutdelete = false;
+
 
         return response(
             new ResponseModel(page, ContentTypes.embed, ResponseTypes.page, embeds)
