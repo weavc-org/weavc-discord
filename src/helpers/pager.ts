@@ -15,8 +15,8 @@ export function Pager(msg: Message, client: Client, response: ResponseModel) {
     
     var m = msg.content.split(' ');
 	let prefix = m.shift();
+    
     var page = 1;
-
     var startPage = parseInt(response.message);
     if (startPage != NaN && startPage >= 1 && startPage <= response.embeds.length) {
         page = startPage;
@@ -32,8 +32,8 @@ export function Pager(msg: Message, client: Client, response: ResponseModel) {
             var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == msg.author.id && message.id == reaction.message.id;
             var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == msg.author.id && message.id == reaction.message.id;
 
-            var back = message.createReactionCollector(backreact, { time: 600000 });
-            var forward = message.createReactionCollector(forwardreact, { time: 600000 });
+            var back = message.createReactionCollector(backreact, { time: 100000 });
+            var forward = message.createReactionCollector(forwardreact, { time: 100000 });
 
             back.on('collect', (r) => {
                 page--;
@@ -55,32 +55,29 @@ export function Pager(msg: Message, client: Client, response: ResponseModel) {
                 }
             })
 
+            // trigger 'collect' event on removal of reaction, if valid
             client.on('messageReactionRemove', (reaction, user) => { 
                 if (!back.ended && back.filter(reaction, user)) { back.emit('collect'); }
                 if (!forward.ended && forward.filter(reaction, user)) { forward.emit('collect'); }
             });
 
+            forward.on('end', (s, reason) => {
+                message.delete().then((m) => {
+                    return;
+                }).catch((err)=> {
+                    
+                });
+            })
+
+            back.on('end', (s, reason) => {
+                message.delete().then((m) => {
+                    return;
+                }).catch((err)=> {
+
+                });
+            })
+
         }).catch(function(err) {
             console.log(err);
         });
-}
-
-
-function parsefooter(footer:String) : iParsedFooter {
-    var model: iParsedFooter = {
-        from: '',
-        page: ''
-    };
-    var footersplit = footer.split(' | ');
-    footersplit.forEach(element => {
-        var elementsplit = element.split(': ');
-        if (elementsplit[0].toLowerCase() == 'page') model.page = elementsplit[1];
-        if (elementsplit[0].toLowerCase() == 'from') model.from = elementsplit[1];
-    });
-    return model;
-}
-
-interface iParsedFooter {
-    from: string,
-    page:  string
 }
