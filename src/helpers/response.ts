@@ -35,6 +35,7 @@ export class ResponseModel {
 	responsetype: ResponseTypes;
 	contentType: ContentTypes;
 	embeds?: Array<RichEmbed>;
+	pagingoptions? : any;
 
 	/**
 	 * @description
