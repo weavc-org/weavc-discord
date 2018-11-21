@@ -33,8 +33,8 @@ export function Pager(msg: Message, Client: Client, Response: ResponseModel) {
             var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == msg.author.id && message.id == reaction.message.id;
             var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == msg.author.id && message.id == reaction.message.id;
 
-            var back = message.createReactionCollector(backreact, { time: 60000 });
-            var forward = message.createReactionCollector(forwardreact, { time: 60000 });
+            var back = message.createReactionCollector(backreact, { time: 600000 });
+            var forward = message.createReactionCollector(forwardreact, { time: 600000 });
 
             back.on('collect', (r) => {
                 page--;
