@@ -87,9 +87,3 @@ export interface ConfigModel {
     token: String;
     prefixes: Array<String>;
 }
-
-
-export function Setup() {
-    
-
-}

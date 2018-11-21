@@ -1,5 +1,5 @@
 
-import { Build, ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
+import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client } from 'discord.js';
 
@@ -24,11 +24,11 @@ export class Hello implements iRouteClass {
 
     default(context: Hello, response: Function) {
         return response(
-            Build('Hello!', ContentTypes.text, ResponseTypes.reply));
+            new ResponseModel('Hello!', ContentTypes.text, ResponseTypes.reply));
     }
 
     hello2(context: Hello, response: Function) {
         return response(
-            Build('Hi', ContentTypes.text, ResponseTypes.reply));
+            new ResponseModel('Hi', ContentTypes.text, ResponseTypes.reply));
     }
 }

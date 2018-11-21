@@ -1,5 +1,5 @@
 
-import { Build, ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
+import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client } from 'discord.js';
 
@@ -23,6 +23,6 @@ export class Github implements iRouteClass {
 
     default(context: Github, response: Function) {
         return response(
-            Build('https://github.com/ChrisWeaver1/discord-bot', ContentTypes.text, ResponseTypes.reply));
+            new ResponseModel('https://github.com/ChrisWeaver1/discord-bot', ContentTypes.text, ResponseTypes.reply));
     }
 }

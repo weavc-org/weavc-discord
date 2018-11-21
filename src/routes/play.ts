@@ -1,5 +1,5 @@
 const ytdl = require('ytdl-core');
-import { Build, ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
+import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
 
@@ -27,7 +27,7 @@ export class Play implements iRouteClass {
 
         if (!voiceChannel) {
             return response(
-                Build('Join a voice channel first!', ContentTypes.text, ResponseTypes.reply));
+                new ResponseModel('Join a voice channel first!', ContentTypes.text, ResponseTypes.reply));
         }
         console.log(context.message);
         voiceChannel.join()
@@ -53,7 +53,7 @@ export class Play implements iRouteClass {
         });
         
         return response(
-            Build('Yes sir!', ContentTypes.text, ResponseTypes.reply));;
+            new ResponseModel('Yes sir!', ContentTypes.text, ResponseTypes.reply));;
     }
 
 }

@@ -1,4 +1,4 @@
-import { Build, ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
+import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
@@ -60,7 +60,7 @@ export class Help implements iRouteClass {
         var embeds: Array<RichEmbed> = [HelpPage, HelpPage2, HelpPage3]
 
         return response(
-            Build(page, ContentTypes.embed, ResponseTypes.page, embeds)
+            new ResponseModel(page, ContentTypes.embed, ResponseTypes.page, embeds)
         )
     }
 }
