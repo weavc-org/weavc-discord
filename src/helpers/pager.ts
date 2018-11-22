@@ -1,15 +1,15 @@
 import { Message, Client, MessageReaction, User, RichEmbed } from "discord.js";
 import { Router } from './router';
 
+
 /**
- * @name pager
+ * @name Pager
  * @description 
- * Handles embed paging via reactions 
- * 
- * @param {Object} msg - The command message sent by the requesting user
- * @param {Object} client - Discordjs client instance
- * @param {Object} response - The built response with the first embed
- * 
+ * Handles embed paging, allowing the user to control which pages they are viewing via reactions
+ * @param {Message} msg - Message Model from users request, content, channel, guild etc
+ * @param {Client} Client - Bots client class, contains information about the logged in bot 
+ * @param {Array<RichEmbed>} Embeds - Embeds to page through
+ * @param {PagingOptions} Options - Options to allow control over certain aspects of Paging functionality 
  */
 export function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Options: PagingOptions = null) {
     
@@ -94,6 +94,16 @@ export function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Op
         });
 }
 
+/**
+ * @name PagingOptions
+ * @description 
+ * Allows for custom settings/options to be set for each paging instance
+ * @var timeout - Period of time to track reactions for
+ * @var timeoutdelete - deletes embed after timeout
+ * @var allowallreactions - Allows everyone to control the paging, not just the requesting user
+ * @var reactionremoval - Removing a reaction also triggers 'collect' event
+ * @var startpage - page that user will start on
+ */
 export class PagingOptions {
     timeout: Number = 600000;
     timeoutdelete: Boolean = false;
