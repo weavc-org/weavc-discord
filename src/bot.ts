@@ -1,5 +1,4 @@
 import { IncomingMessage } from "http";
-import { ResponseModel, ResponseTypes, ContentTypes } from "./helpers/response";
 import { Config, ConfigModel } from './helpers/config'
 import { Pager } from './helpers/pager';
 import { Router } from './helpers/router';
@@ -24,25 +23,7 @@ client.on('message', (msg: Message) => {
 
 	if (!config.prefixes.some((p:string) => p === prefix)) return;
 	
-	Router(message, msg, client)
-		//, (response: ResponseModel) => {
-		// if (response.responsetype == ResponseTypes.reply) {
-		// 	if (response.contentType == ContentTypes.text) {
-		// 		msg.reply(response.message);
-		// 	}
-		// 	else if (response.contentType == ContentTypes.embed) {
-		// 		msg.reply(response.embeds[0]);
-		// 	}
-		// }
-		// if (response.responsetype == ResponseTypes.send) {
-		// 	if (response.contentType == ContentTypes.text) {
-		// 		msg.channel.send(response.message);	
-		// 	}
-		// 	else if (response.contentType == ContentTypes.embed) {
-		// 		msg.channel.send(response.embeds[0]);	
-		// 	}
-		// }
-		// if (response.responsetype == ResponseTypes.page) Pager(msg, client, response)
+	Router(message, msg, client);
 });
 
 config.on('ready', () => {

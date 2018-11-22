@@ -1,5 +1,4 @@
 import { Message, Client } from "discord.js";
-import { ResponseModel } from "./response";
 import { Help } from '../routes/help';
 import { Github } from '../routes/github';
 import { Hello } from '../routes/hello';

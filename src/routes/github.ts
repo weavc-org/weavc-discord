@@ -1,5 +1,3 @@
-
-import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client } from 'discord.js';
 

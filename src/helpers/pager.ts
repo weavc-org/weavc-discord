@@ -1,5 +1,4 @@
-import { Message, Client, MessageReaction, User } from "discord.js";
-import { ResponseModel } from "./response";
+import { Message, Client, MessageReaction, User, RichEmbed } from "discord.js";
 import { Router } from './router';
 
 /**
@@ -12,19 +11,18 @@ import { Router } from './router';
  * @param {Object} response - The built response with the first embed
  * 
  */
-export function Pager(msg: Message, Client: Client, Response: ResponseModel) {
+export function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Options: PagingOptions = null) {
     
     var m = msg.content.split(' ');
 	let prefix = m.shift();
 
-    var Options = new PagingOptions();
-    if (Response.pagingoptions != null || Response.pagingoptions != undefined) {
-        Options = Response.pagingoptions;
+    if (Options == null || Options == undefined) {
+        Options = new PagingOptions();
     }
 
     var page = Options.startpage.valueOf();
 
-    msg.channel.send(Response.embeds[page-1])
+    msg.channel.send(Embeds[page-1])
         .then(function (message: Message) {
             
             message.react("⬅").then((r) => {
@@ -36,8 +34,8 @@ export function Pager(msg: Message, Client: Client, Response: ResponseModel) {
                 var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == msg.author.id && message.id == reaction.message.id;
             }
             else {
-                var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && message.id == reaction.message.id;
-                var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && message.id == reaction.message.id;
+                var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && message.id == reaction.message.id && user.id != Client.user.id;
+                var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && message.id == reaction.message.id && user.id != Client.user.id;
             }
 
             var back = message.createReactionCollector(backreact, { time: Options.timeout.valueOf() });
@@ -45,8 +43,8 @@ export function Pager(msg: Message, Client: Client, Response: ResponseModel) {
 
             back.on('collect', (r) => {
                 page--;
-                if (page <= Response.embeds.length && page >= 1) { 
-                    message.edit(Response.embeds[page-1]);
+                if (page <= Embeds.length && page >= 1) { 
+                    message.edit(Embeds[page-1]);
                 }
                 else {
                     page++;
@@ -55,8 +53,8 @@ export function Pager(msg: Message, Client: Client, Response: ResponseModel) {
 
             forward.on('collect', (r) => {
                 page++;
-                if (page <= Response.embeds.length && page >= 1) { 
-                    message.edit(Response.embeds[page-1]);
+                if (page <= Embeds.length && page >= 1) { 
+                    message.edit(Embeds[page-1]);
                 }
                 else {
                     page--;

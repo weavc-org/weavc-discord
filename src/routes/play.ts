@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
 

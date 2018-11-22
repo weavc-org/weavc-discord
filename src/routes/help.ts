@@ -1,4 +1,3 @@
-import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response';
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
@@ -60,18 +59,14 @@ export class Help implements iRouteClass {
 
         var embeds: Array<RichEmbed> = [HelpPage, HelpPage2, HelpPage3]
 
-        var res = new ResponseModel(page, ContentTypes.embed, ResponseTypes.page, embeds);
-        res.pagingoptions = new PagingOptions()
-        res.pagingoptions.allowallreactions=true;
-        res.pagingoptions.timeout=100000;
-        res.pagingoptions.reactionremoval=true;
-        res.pagingoptions.startpage=1;
-        res.pagingoptions.timeoutdelete = false;
+        var options = new PagingOptions();
+        options.allowallreactions=true;
+        options.timeout=100000;
+        options.reactionremoval=true;
+        options.startpage=1;
+        options.timeoutdelete = false;
 
 
-        Pager(
-            context.req, context.client,
-            new ResponseModel(page, ContentTypes.embed, ResponseTypes.page, embeds)
-        );
+        Pager(context.req, context.client, embeds, options);
     }
 }
