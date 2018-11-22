@@ -27,25 +27,3 @@ With Docker (Do all steps above first) - good for getting around the dependancy 
 docker build . -t discord-bot:latest
 docker run discord-bot <&>
 ```
-
-#### TODO
-
-In order of current priority
-
-1. ~~Command: 'play stop' should leave voice channel regardless of if the user is in the channel~~
-1. ~~Work out class routing, make it an extension of the router~~
-1. ~~Paging on embeds with reactions~~
-1. ~~Convert to typescript. Interfaces and models would be useful~~
-1. ~~Config class that uses fs to get & create Config~~
-1. ~~Better embed creation~~
-1. ~~Private fork of my own project?~~ Thanks: http://deanmalone.net/post/how-to-fork-your-own-repo-on-github/
-1. ~~Delete paging message that is no longer active (see if there is an event)~~
-1. ~~Split models into their own folder?~~ I'm not sure this is the right thing to do.
-1. ~~Paging Options (time, only requesting user can control etc).. Add these to responseModel or config?~~
-1. ~~Move responses to routing classes, dont return them back to bot.js~~
-1. Setup config script - entering keys and values etc
-1. Implement Better error handling & filtering out incorrect values
-1. More/extended Features/examples
-1. Database handling (SQL, SQLite, MongoDB)
-1. Turn it into an npm package?
-1. Documentation
