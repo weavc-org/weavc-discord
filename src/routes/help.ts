@@ -2,7 +2,7 @@ import { ResponseModel, ResponseTypes, ContentTypes } from '../helpers/response'
 import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
-import { PagingOptions } from '../helpers/pager';
+import { PagingOptions, Pager } from '../helpers/pager';
 var config = new Config();
 
 export class Help implements iRouteClass {
@@ -69,8 +69,9 @@ export class Help implements iRouteClass {
         res.pagingoptions.timeoutdelete = false;
 
 
-        return response(
+        Pager(
+            context.req, context.client,
             new ResponseModel(page, ContentTypes.embed, ResponseTypes.page, embeds)
-        )
+        );
     }
 }

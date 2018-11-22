@@ -23,12 +23,10 @@ export class Hello implements iRouteClass {
     }
 
     default(context: Hello, response: Function) {
-        return response(
-            new ResponseModel('Hello!', ContentTypes.text, ResponseTypes.reply));
+        return context.req.reply(`Hello!`);
     }
 
     hello2(context: Hello, response: Function) {
-        return response(
-            new ResponseModel('Hi', ContentTypes.text, ResponseTypes.reply));
+        return context.req.reply(`hi`);
     }
 }

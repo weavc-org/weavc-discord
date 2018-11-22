@@ -22,7 +22,6 @@ export class Github implements iRouteClass {
     }
 
     default(context: Github, response: Function) {
-        return response(
-            new ResponseModel('https://github.com/ChrisWeaver1/discord-bot', ContentTypes.text, ResponseTypes.reply));
+        return context.req.channel.send('https://github.com/ChrisWeaver1/discord-bot');
     }
 }

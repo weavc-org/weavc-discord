@@ -38,11 +38,9 @@ export class Config extends EventEmitter implements ConfigModel {
     }
 
     private create() {
-        var model: ConfigModel = {
-            setup: false,
-            token: '',
-            prefixes: []
-        };
+        this.setup = false;
+        this.token = '';
+        this.prefixes = [];
 
         this.write(() => {
             this.reload();

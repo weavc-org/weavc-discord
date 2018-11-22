@@ -26,10 +26,8 @@ export class Play implements iRouteClass {
         var voiceChannel = context.req.member.voiceChannel;
 
         if (!voiceChannel) {
-            return response(
-                new ResponseModel('Join a voice channel first!', ContentTypes.text, ResponseTypes.reply));
+            return context.req.reply('Join a voice channel first!');
         }
-        console.log(context.message);
         voiceChannel.join()
             .then((connection: VoiceConnection) => {
                 var stream = ytdl(context.message[1], { filter: 'audioonly' });
@@ -45,15 +43,14 @@ export class Play implements iRouteClass {
 
     stop(context: Play, response: Function) {
         var channels = context.req.member.guild.channels;
-        //might throw
+        
         channels.forEach((channel: VoiceChannel) => {
             if (channel.type == 'voice') {
                 channel.leave();
             }
         });
         
-        return response(
-            new ResponseModel('Yes sir!', ContentTypes.text, ResponseTypes.reply));;
+        return context.req.reply('Yes sir!');
     }
 
 }

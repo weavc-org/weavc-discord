@@ -33,7 +33,7 @@ var Routes:Array<iRoute> = [
  * @param {Client} Client Class detailing the bot you are currently logged in as
  * @param {Function} Result Callback result. Takes ResponseModel
  */
-export function Router(Message: Array<String>, MessageRequest: Message, Client: Client, Result: Function) {
+export function Router(Message: Array<String>, MessageRequest: Message, Client: Client) { //, Result: Function) {
 
 	var ClassRoute: iRouteClass = undefined;
 	var InnerRoute: Function = undefined;
@@ -60,9 +60,7 @@ export function Router(Message: Array<String>, MessageRequest: Message, Client: 
 	}
 	if (InnerRoute == undefined) { InnerRoute = ClassRoute.default }
 
-	InnerRoute(ClassRoute, (response: ResponseModel) => {
-		Result(response);
-	})
+	InnerRoute(ClassRoute)
  }
 
 /**
