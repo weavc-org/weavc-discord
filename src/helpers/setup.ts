@@ -7,9 +7,17 @@ const rl = ReadLine.createInterface({
   output: process.stdout
 });
 
-export function setup(): Promise<Boolean> {
+export function setup(error: Boolean = false): Promise<Boolean> {
     return new Promise<Boolean> (
         function (resolve, reject) {
+            if (error) {
+                console.log(
+                    "Setup error:\nI have created a config file for you, "+
+                    "but it needs some of the values to be filled out before I can function correctly. \n"+
+                    "Please run through the setup script or edit the config file ( found at: 'src/config.json' ) "+
+                    "changing setup value to true and adding the token provided by discord, here: https://discordapp.com/developers/applications/\n")
+            }
+
             rl.question('Would you like to enter config values now? [y/n] ', (answer: string) => {
                 if (answer.toLowerCase() == 'y' || answer.toLowerCase() == 'yes') {
                     console.log('Leave values blank if you want to skip over it. Please note entering no value or incorrect values for required fields may cause you issues down the line.')
