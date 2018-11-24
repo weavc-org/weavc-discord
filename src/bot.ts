@@ -5,7 +5,8 @@ import { setup } from './helpers/setup';
 //const Discord = require('discord.js');
 
 const client = new Client();
-var config = new Config();
+var config = new Config(process.argv[2] == '--setup');
+
 
 client.on('ready', () => {
 	config.prefixes.push('<@'+client.user.id+'>');
@@ -37,13 +38,13 @@ config.on('ready', () => {
 })
 
 config.on('setup', () => {
-		setup(true).then((value: Boolean) => {
-			config.reload();
-		}, (value: Boolean) => {
-			console.log('Config not setup. Please run through the setup script or enter the values manually in src/config.json as detailed above.');
-			process.exit();
-		}).catch((err)=> {
-			console.log(err);
-			process.exit();
-		});
+	setup(!(process.argv[2] == '--setup')).then((value: Boolean) => {
+		config.reload();
+	}, (value: Boolean) => {
+		console.log('Config not setup. Please run through the setup script or enter the values manually in src/config.json as detailed above.');
+		process.exit();
+	}).catch((err)=> {
+		console.log(err);
+		process.exit();
+	});
 })

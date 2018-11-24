@@ -14,9 +14,13 @@ export class Config extends EventEmitter implements ConfigModel {
     token: String;
     prefixes: Array<String>;
 
-    constructor() {
+    argSetup: Boolean;
+    triggered: Boolean = false;
+
+    constructor(argsetup: Boolean = false) {
         super();
         this.reload();
+        this.argSetup = argsetup;
     }
 
     reload() {
@@ -24,11 +28,13 @@ export class Config extends EventEmitter implements ConfigModel {
             this.read(()=> {
                 if (this.setup == false ||
                     this.token == undefined ||
-                    this.token == '') {
+                    this.token == '' || this.argSetup && !this.triggered) {
+                        this.triggered = true;
                         this.emit('setup');
                 }
                 else {
-                    this.emit('ready')
+                    if (!this.argSetup) this.emit('ready');
+                    else { process.exit() }
                 }
             })
         }
