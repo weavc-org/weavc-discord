@@ -6,11 +6,11 @@
   "scripts": {
     "start": "./node_modules/.bin/tsc -p . && node src/bot.js",
     "build" : "./node_modules/.bin/tsc -p .",
-    "docker:build" : "docker build . -t discord-bot:latest",
-    "docker:run": "docker run -d --name discord-bot discord-bot:latest",
+    "docker:build" : "docker build . -t discord-bot",
+    "docker:run": "docker run -d --name discord-bot discord-bot",
     "docker:stop" : "docker container stop discord-bot",
     "docker:remove" : "docker container rm discord-bot",
-    "docker": "npm run docker:stop && npm run docker:remove && npm run docker:build && npm run docker:run",
+    "docker": "npm run docker:stop && npm run docker:build && npm run docker:remove && npm run docker:run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
