@@ -1,5 +1,5 @@
 import { Message, Client } from 'discord.js';
-
+import { iRouteController } from '../../../lib'
 /**
  * @name Github
  * @class
@@ -12,6 +12,6 @@ import { Message, Client } from 'discord.js';
  * default route for messages not containing a secondary matching command.
  * Sends link to github repo
  */
-export function Github (Message: String[], MessageRequest: Message, Client: Client) {
+export var Github : iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
     return MessageRequest.channel.send('https://github.com/ChrisWeaver1/weav-discord');
 }

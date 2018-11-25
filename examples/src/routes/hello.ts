@@ -1,4 +1,5 @@
 import { Message, Client } from 'discord.js';
+import { iRouteController } from '../../../lib'
 
 /**
  * @name Hello
@@ -11,7 +12,7 @@ import { Message, Client } from 'discord.js';
  * @param MessageRequest 
  * @param Client 
  */
-export function Hello(Message: String[], MessageRequest: Message, Client: Client) {
+export var Hello : iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
     
     var Greetings = ['Hello!', 'Hi', 'Heya', 'o/', 'Hello ^-^'];
     return MessageRequest.reply(Greetings[Math.floor(Math.random() * (Greetings.length))]);

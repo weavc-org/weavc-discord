@@ -3,6 +3,8 @@ export { Pager, PagingOptions } from './services/pager'
 export { Router } from './services/router'
 export { Player, PlayerAction, PlayerOptions, GetQueueForGuild } from './services/player'
 
+import { Message, Client } from 'discord.js'
+
 /**
  * @interface iRoute
  * @description 
@@ -16,8 +18,12 @@ export { Player, PlayerAction, PlayerOptions, GetQueueForGuild } from './service
  */
 export interface iRoute {
 	name: String,
-	controller?: Function,
+	controller?: iRouteController,
 	alias: String[],
     children?: iRoute[],
     default?: Boolean,
+}
+
+export interface iRouteController {
+	(Message: String[], MessageRequest: Message, Client: Client): void,
 }

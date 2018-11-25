@@ -1,6 +1,6 @@
 import { Message, Client, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
-import { PagingOptions, Pager } from '../../../lib/';
+import { PagingOptions, Pager, iRouteController } from '../../../lib/';
 var config = new Config();
 
 /**
@@ -12,7 +12,7 @@ var config = new Config();
  * 
  * @function
  */
-export function Help(Message: String[], MessageRequest: Message, Client: Client) {
+export var Help : iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
     var page = Message[1];
     if (page == undefined) {
         page = '1';

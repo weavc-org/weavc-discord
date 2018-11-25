@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
-import { Player, PlayerAction, PlayerOptions } from  '../../../lib'
+import { Player, PlayerAction, PlayerOptions, iRouteController } from  '../../../lib'
 
 
 /**
@@ -20,62 +20,34 @@ class play {
 
     constructor(){}
 
-    Play(Message: String[], MessageRequest: Message, Client: Client) {
+    Play: iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
         var options = new PlayerOptions();
         options.url = Message[1].valueOf();
         Player(MessageRequest, Client, PlayerAction.play, options);
     }
 
-    Stop(Message: String[], MessageRequest: Message, Client: Client) {
+    Stop: iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.stop, null); 
         return MessageRequest.reply('Yes sir!');
     }
 
-    Join(Message: String[], MessageRequest: Message, Client: Client) {
+    Join: iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.join, null);
     }
     
-    Skip(Message: String[], MessageRequest: Message, Client: Client) {
+    Skip: iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.skip, null);
     }
 
-    Queue(Message: String[], MessageRequest: Message, Client: Client) {
+    Queue: iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.queue, null);
     }
 
-    Clear(Message: String[], MessageRequest: Message, Client: Client) {
+    Clear: iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.clear, null);
     }
 }
 
 export var Play = new play();
-
-
-// class Deep {
-//     constructor() {
-
-//     }
-//     Deeper (Message: String[], MessageRequest: Message, Client: Client) {
-//         MessageRequest.reply('Deeper');
-//     }
-// }
-
-// class Play2 {
-
-//     constructor() {
-
-//     }
-
-//     Play (Message: String[], MessageRequest: Message, Client: Client) {
-//         MessageRequest.reply('Play');
-//     }
-
-//     Stop (Message: String[], MessageRequest: Message, Client: Client) {
-//         MessageRequest.reply('Stop');
-//     }
-
-//     Deep: Deep = new Deep();
-// }
-// // var Playx = new Play2()
 
 
