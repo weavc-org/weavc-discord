@@ -1,6 +1,7 @@
 
 export { Pager, PagingOptions } from './src/utilities/pager'
 export { Router } from './src/router'
+export { Player, PlayerAction, PlayerOptions, GetQueueForGuild } from './src/utilities/player'
 
 /**
  * @interface iRoute
