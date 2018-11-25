@@ -72,10 +72,12 @@ function Stop(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
     });
 }
 
-function Skip(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
-    Entry.queue.shift();
-    if (Entry.dispatcher != null) {
+function Skip(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {#
+    if (Entry.dispatcher != null || Entry.dispatcher == undefined) {
         Entry.dispatcher.emit('end');
+    }
+    else {
+        Entry.queue.shift();
     }
 
     MessageRequest.channel.send('I have skipped to the next song!');
