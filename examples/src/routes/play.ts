@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
-import { Player, PlayerAction, PlayerOptions } from  '../../weav-discord/'
+import { Player, PlayerAction, PlayerOptions } from  '../../../lib'
 
 
 /**

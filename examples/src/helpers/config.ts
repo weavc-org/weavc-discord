@@ -24,7 +24,7 @@ export class Config extends EventEmitter implements ConfigModel {
     }
 
     reload() {
-        if (existsSync('src/config.json')) {
+        if (existsSync(__dirname+'/../config.json')) {
             this.read(()=> {
                 if (this.setup == false ||
                     this.token == undefined ||
@@ -54,7 +54,7 @@ export class Config extends EventEmitter implements ConfigModel {
     }
 
     private read(callback: Function) {
-        readFile('src/config.json', 'utf8', (err, data) => {
+        readFile(__dirname+'/../config.json', 'utf8', (err, data) => {
             if (err) throw err;
             
             var model: ConfigModel = JSON.parse(data);
