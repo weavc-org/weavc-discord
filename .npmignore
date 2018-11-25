@@ -1,5 +1,6 @@
 tsconfig.json
 config.json
-tsconfig.json
 examples/
 .vscode/
+Dockerfile
+.dockerignore
