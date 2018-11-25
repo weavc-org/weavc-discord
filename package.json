@@ -11,7 +11,7 @@
     "docker:run": "docker run -d --name discord-bot discord-bot",
     "docker:stop" : "docker container stop discord-bot",
     "docker:remove" : "docker container rm discord-bot",
-    "docker": "npm run docker:stop && npm run docker:build && npm run docker:remove && npm run docker:run",
+    "docker": "npm run docker:build && npm run docker:stop && npm run docker:remove && npm run docker:run",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

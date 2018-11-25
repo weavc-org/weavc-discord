@@ -1,5 +1,6 @@
 const ytdl = require('ytdl-core');
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
+import { Player, PlayerAction, PlayerOptions } from  '../../weav-discord/'
 
 
 /**
@@ -20,34 +21,19 @@ class play {
     constructor(){}
 
     Play(Message: String[], MessageRequest: Message, Client: Client) {
-        var voiceChannel = MessageRequest.member.voiceChannel;
-
-        if (!voiceChannel) {
-            return MessageRequest.reply('Join a voice channel first!');
-        }
-        voiceChannel.join()
-            .then((connection: VoiceConnection) => {
-                var stream = ytdl(Message[1], { filter: 'audioonly' });
-                stream.on('error', (err:any)=>{console.log(err)});
-                return connection.playStream(stream, { seek: 0, volume: 1});
-            })
-            .then(dispatcher => {
-                dispatcher.on('error', (a) => { voiceChannel.leave(); console.error; console.log(a) });
-                dispatcher.on('end', (a) => { voiceChannel.leave(); console.log(a)});
-            })
-            .catch(console.error);
+        var options = new PlayerOptions();
+        options.url = Message[1].valueOf();
+        console.log(options)
+        Player(MessageRequest, Client, PlayerAction.play, options);
     }
 
     Stop(Message: String[], MessageRequest: Message, Client: Client) {
-        var channels = MessageRequest.member.guild.channels;
-        
-        channels.forEach((channel: VoiceChannel) => {
-            if (channel.type == 'voice') {
-                channel.leave();
-            }
-        });
-        
+        Player(MessageRequest, Client, PlayerAction.stop, null); 
         return MessageRequest.reply('Yes sir!');
+    }
+
+    Join(Message: String[], MessageRequest: Message, Client: Client) {
+        Player(MessageRequest, Client, PlayerAction.join, null);
     }
 }
 
