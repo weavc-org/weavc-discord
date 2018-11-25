@@ -72,7 +72,7 @@ function Stop(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
     });
 }
 
-function Skip(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {#
+function Skip(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
     if (Entry.dispatcher != null || Entry.dispatcher == undefined) {
         Entry.dispatcher.emit('end');
     }
