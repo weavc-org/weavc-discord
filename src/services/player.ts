@@ -174,6 +174,7 @@ export function GetQueueForGuild(ID: String) : Promise<QueueEntry> {
         }, () => {
             return reject()
         })
+        return reject();
     })
 }
 
