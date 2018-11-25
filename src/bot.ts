@@ -17,10 +17,10 @@ import { Play } from '../src/routes/play';
 var Routes: iRoute[] = [
 	{ name:'hello', controller: Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },
 	{ name:'help', controller: Help, alias: ['help', '-h'], children: [] },
-	{ name:'player', alias: ['play', 'p', 'player'], children: [
+	{ name:'player', alias: ['p', 'player'], children: [
 		{ name:'play', controller: Play.Play, alias: [], children: [], default: true },
 		{ name:'stop', controller: Play.Stop, alias: ['stop', 's'], children: [] },
-		{ name:'join', controller: Play.Join, alias: ['join', 'j'], children: [] },
+		{ name:'join', controller: Play.Join, alias: ['join', 'j', 'p', 'play'], children: [] },
 		{ name:'skip', controller: Play.Skip, alias: ['skip'], children: [] },
 		{ name:'queue', controller: Play.Queue, alias: ['q', 'queue'], children: [] },
 		{ name:'clear', controller: Play.Clear, alias: ['c', 'clear'], children: [] }
