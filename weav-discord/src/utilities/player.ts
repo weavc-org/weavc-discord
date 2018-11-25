@@ -38,7 +38,7 @@ function Join(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
 
     voiceChannel.join()
         .then((connection: VoiceConnection) => { 
-            return P(connection, Entry.queue[0].valueOf(), voiceChannel);
+            return P(connection, Entry.queue[0].valueOf(), voiceChannel, Entry);
         })
         .catch(console.error);
 }
