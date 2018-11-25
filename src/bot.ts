@@ -1,15 +1,36 @@
 import { Config, ConfigModel } from './helpers/config'
-import { Router } from './helpers/router';
+import { Router, iRoute } from '../weav-discord/';
 import { Message, Client } from 'discord.js';
 import { setup } from './helpers/setup';
-//const Discord = require('discord.js');
+import { Help } from '../src/routes/help';
+import { Github } from '../src/routes/github';
+import { Hello } from '../src/routes/hello';
+import { Play } from '../src/routes/play'; 
+
+/**
+ * @name Routes
+ * @description 
+ * Array of valid class routes.
+ * If one of the alias' matches the first index of Message, use matched class.
+ * Defaults to index 0.
+ */
+var Routes: iRoute[] = [
+	{ name:'hello', controller: Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },
+	{ name:'help', controller: Help, alias: ['help', '-h'], children: [] },
+	{ name:'play', alias: ['play', 'p'], children: [
+		{ name:'play', controller: Play.Play, alias: [], children: [], default: true },
+		{ name:'stop', controller: Play.Stop, alias: ['stop', 's'], children: [] }
+	]},
+	{ name:'github', controller: Github, alias: ['git', 'github'], children: [] },
+]
 
 const client = new Client();
 var config = new Config(process.argv[2] == '--setup');
-
+var router:Router;
 
 client.on('ready', () => {
 	config.prefixes.push('<@'+client.user.id+'>');
+	router = new Router(Routes, config.prefixes);
 	console.log(`Logged in as ${client.user.tag}!`);
 
 	process.on('uncaughtException', function(err) {
@@ -17,14 +38,8 @@ client.on('ready', () => {
 	});
 });
 
-client.on('message', (msg: Message) => {
-	
-	var message = msg.content.split(' ');
-	let prefix = message.shift();
-
-	if (!config.prefixes.some((p:string) => p === prefix)) return;
-	
-	Router(message, msg, client);
+client.on('message', (msg: Message) => {	
+	router.Go(msg, client);
 });
 
 config.on('ready', () => {

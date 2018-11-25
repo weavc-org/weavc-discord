@@ -1,6 +1,4 @@
 import { Message, Client, MessageReaction, User, RichEmbed } from "discord.js";
-import { Router } from './router';
-
 
 /**
  * @name Pager

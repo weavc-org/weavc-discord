@@ -1,5 +1,4 @@
 const ytdl = require('ytdl-core');
-import { iRouteClass, iRoute } from '../helpers/router';
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
 
 
@@ -16,34 +15,19 @@ import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
  * @function stop - 
  * Leaves voice channels in requesting server
  */
-export class Play implements iRouteClass {
-    Routes: iRoute[] = [
-        { name: 'stop', route: this.stop, alias:['stop', 's'], matchcase: false }
-    ];
+class play {
 
-    Message: String[];
-    MessageRequest: Message;
-    Client: Client;
+    constructor(){}
 
-    constructor(
-        Message: String[],
-        MessageRequest: Message,
-        Client: Client) {
-        this.Message = Message;
-        this.MessageRequest = MessageRequest;
-        this.Client = Client;
-    }
-
-
-    default(context: Play) {
-        var voiceChannel = context.MessageRequest.member.voiceChannel;
+    Play(Message: String[], MessageRequest: Message, Client: Client) {
+        var voiceChannel = MessageRequest.member.voiceChannel;
 
         if (!voiceChannel) {
-            return context.MessageRequest.reply('Join a voice channel first!');
+            return MessageRequest.reply('Join a voice channel first!');
         }
         voiceChannel.join()
             .then((connection: VoiceConnection) => {
-                var stream = ytdl(context.Message[1], { filter: 'audioonly' });
+                var stream = ytdl(Message[1], { filter: 'audioonly' });
                 stream.on('error', (err:any)=>{console.log(err)});
                 return connection.playStream(stream, { seek: 0, volume: 1});
             })
@@ -54,8 +38,8 @@ export class Play implements iRouteClass {
             .catch(console.error);
     }
 
-    stop(context: Play) {
-        var channels = context.MessageRequest.member.guild.channels;
+    Stop(Message: String[], MessageRequest: Message, Client: Client) {
+        var channels = MessageRequest.member.guild.channels;
         
         channels.forEach((channel: VoiceChannel) => {
             if (channel.type == 'voice') {
@@ -63,7 +47,38 @@ export class Play implements iRouteClass {
             }
         });
         
-        return context.MessageRequest.reply('Yes sir!');
+        return MessageRequest.reply('Yes sir!');
     }
-
 }
+
+export var Play = new play();
+
+
+// class Deep {
+//     constructor() {
+
+//     }
+//     Deeper (Message: String[], MessageRequest: Message, Client: Client) {
+//         MessageRequest.reply('Deeper');
+//     }
+// }
+
+// class Play2 {
+
+//     constructor() {
+
+//     }
+
+//     Play (Message: String[], MessageRequest: Message, Client: Client) {
+//         MessageRequest.reply('Play');
+//     }
+
+//     Stop (Message: String[], MessageRequest: Message, Client: Client) {
+//         MessageRequest.reply('Stop');
+//     }
+
+//     Deep: Deep = new Deep();
+// }
+// // var Playx = new Play2()
+
+
