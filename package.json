@@ -6,7 +6,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepare" : "npm run build",
+    "prepare": "npm run build",
     "build:example": "tsc -p examples/",
     "start": "tsc && tsc -p examples/ && node examples/src/bot.js",
     "setup": "tsc -p examples/ && node examples/src/bot.js --setup",
@@ -19,8 +19,8 @@
   "author": "Chris Weaver",
   "license": "MIT",
   "repository": {
-    "type" : "git",
-    "url" : "https://github.com/ChrisWeaver1/discord-bot"
+    "type": "git",
+    "url": "https://github.com/ChrisWeaver1/weav-discord"
   },
   "dependencies": {
     "@types/node": "^10.12.9",
@@ -33,5 +33,14 @@
     "uws": "^9.148.0",
     "ytdl-core": "^0.28.0"
   },
-  "keywords": ["discord", "bot", "framework", "music", "audio", "youtube", "route", "controller"]
+  "keywords": [
+    "discord",
+    "bot",
+    "framework",
+    "music",
+    "audio",
+    "youtube",
+    "route",
+    "controller"
+  ]
 }

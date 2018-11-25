@@ -13,5 +13,5 @@ import { Message, Client } from 'discord.js';
  * Sends link to github repo
  */
 export function Github (Message: String[], MessageRequest: Message, Client: Client) {
-    return MessageRequest.channel.send('https://github.com/ChrisWeaver1/discord-bot');
+    return MessageRequest.channel.send('https://github.com/ChrisWeaver1/weav-discord');
 }

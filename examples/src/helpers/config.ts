@@ -74,7 +74,7 @@ export class Config extends EventEmitter implements ConfigModel {
             prefixes: this.prefixes,
         }
 
-        writeFile('src/config.json', JSON.stringify(model), (err) => {
+        writeFile(__dirname+'/../config.json', JSON.stringify(model), (err) => {
             if (err) throw err;
             callback();
         })

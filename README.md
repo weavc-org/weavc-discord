@@ -1,4 +1,4 @@
-# discord-bot (discordjs)
+# weav-discore (discordjs)
 ### WORK IN PROGRESS
 #### Description
 
@@ -27,10 +27,9 @@ At the moment this project is in rather early development. However if you want t
 1. You may have issues installing/compiling all of the dependancies - especially on windows. "node-opus" is usually the one that will cause people issues.
 1. Due to it being in an early stage of development I will likely be pushing breaking changes every now and again. 
 
-##### Setup
-
+##### ~~Setup~~ This has/is changing
 ```
-git clone git@github.com:ChrisWeaver1/discord-bot.git
+git clone git@github.com:ChrisWeaver1/weav-discord.git
 cd discord-bot
 npm install
 npm start
@@ -41,4 +40,4 @@ Run through the setup now, or fill out config.json in the src folder manually.
 Docker:
 ```
 npm run docker
-```
+```~~
