@@ -14,7 +14,7 @@
     "docker:run": "docker run -d --name weav-discord weav-discord",
     "docker:stop": "docker container stop weav-discord",
     "docker:remove": "docker container rm weav-discord",
-    "docker": "npm run docker:build && npm run docker:stop && npm run docker:remove && npm run docker:run"
+    "docker": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run"
   },
   "author": "Chris Weaver",
   "license": "MIT",
