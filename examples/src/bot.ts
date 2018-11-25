@@ -1,5 +1,5 @@
 import { Config, ConfigModel } from './helpers/config'
-import { Router, iRoute } from '../weav-discord/';
+import { Router, iRoute } from '../../lib';
 import { Message, Client } from 'discord.js';
 import { setup } from './helpers/setup';
 import { Help } from '../src/routes/help';

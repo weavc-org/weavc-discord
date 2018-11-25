@@ -1,6 +1,6 @@
 import { Message, Client, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
-import { PagingOptions, Pager } from '../../weav-discord/src/utilities/pager';
+import { PagingOptions, Pager } from '../../../lib/';
 var config = new Config();
 
 /**

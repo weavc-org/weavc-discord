@@ -1,21 +1,27 @@
 {
-  "name": "discord-bot",
+  "name": "weav-discord",
   "version": "1.0.0",
   "description": "",
-  "main": "bot.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "scripts": {
-    "start": "./node_modules/.bin/tsc -p . && node src/bot.js",
-    "build": "./node_modules/.bin/tsc -p .",
-    "setup": "./node_modules/.bin/tsc -p . && node src/bot.js --setup",
-    "docker:build": "docker build . -t discord-bot",
-    "docker:run": "docker run -d --name discord-bot discord-bot",
-    "docker:stop": "docker container stop discord-bot",
-    "docker:remove": "docker container rm discord-bot",
-    "docker": "npm run docker:build && npm run docker:stop && npm run docker:remove && npm run docker:run",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "prepare" : "npm run build",
+    "build:example": "tsc -p examples/",
+    "start": "tsc && tsc -p examples/ && node examples/src/bot.js",
+    "setup": "tsc -p examples/ && node examples/src/bot.js --setup",
+    "docker:build": "docker build . -t weav-discord",
+    "docker:run": "docker run -d --name weav-discord weav-discord",
+    "docker:stop": "docker container stop weav-discord",
+    "docker:remove": "docker container rm weav-discord",
+    "docker": "npm run docker:build && npm run docker:stop && npm run docker:remove && npm run docker:run"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Chris Weaver",
+  "license": "MIT",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/ChrisWeaver1/discord-bot"
+  },
   "dependencies": {
     "@types/node": "^10.12.9",
     "bufferutil": "^3.0.5",
@@ -26,5 +32,6 @@
     "typescript": "^2.9.2",
     "uws": "^9.148.0",
     "ytdl-core": "^0.28.0"
-  }
+  },
+  "keywords": ["discord", "bot", "framework", "music", "audio", "youtube", "route", "controller"]
 }
