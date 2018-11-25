@@ -23,7 +23,6 @@ class play {
     Play(Message: String[], MessageRequest: Message, Client: Client) {
         var options = new PlayerOptions();
         options.url = Message[1].valueOf();
-        console.log(options)
         Player(MessageRequest, Client, PlayerAction.play, options);
     }
 
@@ -38,6 +37,14 @@ class play {
     
     Skip(Message: String[], MessageRequest: Message, Client: Client) {
         Player(MessageRequest, Client, PlayerAction.skip, null);
+    }
+
+    Queue(Message: String[], MessageRequest: Message, Client: Client) {
+        Player(MessageRequest, Client, PlayerAction.queue, null);
+    }
+
+    Clear(Message: String[], MessageRequest: Message, Client: Client) {
+        Player(MessageRequest, Client, PlayerAction.clear, null);
     }
 }
 

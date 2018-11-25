@@ -8,6 +8,8 @@ export function Player(MessageRequest: Message, Client: Client, Action: PlayerAc
         if (Action == PlayerAction.join) { Join(MessageRequest, Client, Action, Options, Entry); }
         if (Action == PlayerAction.stop) { Stop(MessageRequest, Client, Action, Options, Entry); } 
         if (Action == PlayerAction.skip) { Skip(MessageRequest, Client, Action, Options, Entry); } 
+        if (Action == PlayerAction.queue) { QueueShow(MessageRequest, Client, Action, Options, Entry); } 
+        if (Action == PlayerAction.clear) { Clear(MessageRequest, Client, Action, Options, Entry); } 
     }, () => {
         var Entry: QueueEntry = {
             guild: Guild.id,
@@ -20,13 +22,35 @@ export function Player(MessageRequest: Message, Client: Client, Action: PlayerAc
 
 function Play(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
     if (Options.url != undefined || Options.url != '') {
-        Entry.queue.push(Options.url);
-        return MessageRequest.channel.send(`Added to queue.`)
+        if (Entry.queue.length < 10) {
+            ytdl.getInfo(Options.url, { seek: 0, volume: 1}, (err:any, info:any)=> {
+                if (err) return MessageRequest.channel.send(`Could not find video. Not added to queue.`);
+                Entry.queue.push({ url: Options.url, title: info.player_response.videoDetails.title });
+                return MessageRequest.channel.send(`Added ${info.player_response.videoDetails.title} to the queue.`);
+            })
+        }
+        else {
+            return MessageRequest.channel.send('Queue is at max capacity (10). You can skip songs using `player skip` command or clear the queue using `player clear`.');
+        }
     }
     else {
         console.log("No URL supplied");
         return;
     }   
+}
+
+function QueueShow(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
+    if (Entry.queue.length <= 0) {
+        MessageRequest.channel.send('You have nothing in the queue.')
+    }
+    else {
+        var message = ''
+        Entry.queue.forEach((index, i) => {
+            message = message + `\n${i+1}. ${index.title}`
+        });
+        message = '```' + message + '```';
+        MessageRequest.channel.send(message);
+    }
 }
 
 function Join(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
@@ -38,7 +62,8 @@ function Join(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
 
     voiceChannel.join()
         .then((connection: VoiceConnection) => { 
-            return P(connection, Entry.queue[0].valueOf(), voiceChannel, Entry);
+            if (Entry.queue == undefined || Entry.queue.length <= 0) return;
+            else return P(connection, Entry.queue[0].url.valueOf(), voiceChannel, Entry);
         })
         .catch(console.error);
 }
@@ -48,15 +73,15 @@ function P(connection:VoiceConnection, URL: string, VoiceChannel: VoiceChannel, 
     stream.on('error', (err:any)=>{console.log(err)});
     Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: 1});
 
-    Entry.dispatcher.on('error', (a) => { Entry.dispatcher = null; VoiceChannel.leave(); console.error; console.log(a) });
-    Entry.dispatcher.on('end', (a) => { 
+    Entry.dispatcher.on('error', (a) => { Entry.dispatcher.emit('end'); console.error; });
+    Entry.dispatcher.once('end', (a) => { 
         GetQueueForGuild(VoiceChannel.guild.id).then(
             (Entry) => { 
                 Entry.queue.shift();
-                if (Entry.queue.length == 0) { Entry.dispatcher = null; VoiceChannel.leave(); return; }
-                P(connection, Entry.queue[0].valueOf(), VoiceChannel, Entry);
+                if (Entry.queue.length <= 0) { Entry.dispatcher = null; VoiceChannel.leave(); return; }
+                else { Entry.dispatcher = null; P(connection, Entry.queue[0].url.valueOf(), VoiceChannel, Entry); }
             }, () => {
-                VoiceChannel.leave(); return;
+                Entry.dispatcher = null; VoiceChannel.leave(); return;
             }
         ).catch(console.error);
     });
@@ -73,20 +98,28 @@ function Stop(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
 }
 
 function Skip(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
-    if (Entry.dispatcher != null || Entry.dispatcher == undefined) {
+    if (Entry.dispatcher != null || Entry.dispatcher != undefined) {
+        if (Entry.queue.length > 1) {
+            MessageRequest.channel.send(`Skipping song. Next up: ${Entry.queue[1].title}`);
+        }
         Entry.dispatcher.emit('end');
     }
     else {
         Entry.queue.shift();
+        if (Entry.queue.length >= 1) {
+            MessageRequest.channel.send(`Skipping song. Next up: ${Entry.queue[0].title}`);
+        }
     }
-
-    MessageRequest.channel.send('I have skipped to the next song!');
 }
 
+function Clear(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
+    Entry.queue = [];
+    MessageRequest.channel.send('Queue cleared.');
+    return Stop(MessageRequest, Client, Action, Options, Entry);
+}
 
 export function GetQueueForGuild(ID: String) : Promise<QueueEntry> {
     return new Promise<QueueEntry> ((resolve, reject)=> {
-        console.log(queue);
         if (queue.queue.length == 0) return reject();
         queue.queue.forEach((Entry) => {
             if (Entry.guild == ID) return resolve(Entry);
@@ -106,15 +139,22 @@ class Queue {
 
 interface QueueEntry {
     guild: String;
-    queue: String[];
+    queue: VideoLink[];
     dispatcher?: StreamDispatcher;
+}
+
+interface VideoLink {
+    url: String;
+    title: String;
 }
 
 export enum PlayerAction {
     play,
     stop,
     join, 
-    skip
+    skip,
+    queue, 
+    clear
 }
 
 var queue = new Queue();
