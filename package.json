@@ -12,9 +12,11 @@
     "setup": "tsc -p examples/ && node examples/src/bot.js --setup",
     "docker:build": "docker build . -t weav-discord",
     "docker:run": "docker run -d --name weav-discord weav-discord",
+    "docker:run-attached": "docker run --name weav-discord weav-discord",
     "docker:stop": "docker container stop weav-discord",
     "docker:remove": "docker container rm weav-discord",
-    "docker": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run"
+    "docker": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run",
+    "docker:attached": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run-attached"
   },
   "author": "Chris Weaver",
   "license": "MIT",
