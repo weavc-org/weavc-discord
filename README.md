@@ -1,4 +1,4 @@
-# weav-discore (discordjs)
+# weav-discord (discordjs)
 ### WORK IN PROGRESS
 #### Description
 
