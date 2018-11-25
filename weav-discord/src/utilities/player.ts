@@ -1,4 +1,4 @@
-import { Message, Client, MessageReaction, User, RichEmbed, VoiceConnection, VoiceChannel } from "discord.js";
+import { Message, Client, MessageReaction, User, RichEmbed, VoiceConnection, VoiceChannel, StreamDispatcher } from "discord.js";
 const ytdl = require('ytdl-core');
 
 export function Player(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions) {
@@ -7,6 +7,7 @@ export function Player(MessageRequest: Message, Client: Client, Action: PlayerAc
         if (Action == PlayerAction.play) { Play(MessageRequest, Client, Action, Options, Entry); }
         if (Action == PlayerAction.join) { Join(MessageRequest, Client, Action, Options, Entry); }
         if (Action == PlayerAction.stop) { Stop(MessageRequest, Client, Action, Options, Entry); } 
+        if (Action == PlayerAction.skip) { Skip(MessageRequest, Client, Action, Options, Entry); } 
     }, () => {
         var Entry: QueueEntry = {
             guild: Guild.id,
@@ -42,18 +43,18 @@ function Join(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
         .catch(console.error);
 }
 
-function P(connection:VoiceConnection, URL: string, VoiceChannel: VoiceChannel) {
+function P(connection:VoiceConnection, URL: string, VoiceChannel: VoiceChannel, Entry: QueueEntry) {
     var stream = ytdl(URL, { filter: 'audioonly' });
     stream.on('error', (err:any)=>{console.log(err)});
-    var dispatcher = connection.playStream(stream, { seek: 0, volume: 1});
+    Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: 1});
 
-    dispatcher.on('error', (a) => { VoiceChannel.leave(); console.error; console.log(a) });
-    dispatcher.on('end', (a) => { 
+    Entry.dispatcher.on('error', (a) => { Entry.dispatcher = null; VoiceChannel.leave(); console.error; console.log(a) });
+    Entry.dispatcher.on('end', (a) => { 
         GetQueueForGuild(VoiceChannel.guild.id).then(
             (Entry) => { 
-                Entry.queue.unshift();
-                if (Entry.queue.length == 0) { VoiceChannel.leave(); return; }
-                P(connection, Entry.queue[0].valueOf(), VoiceChannel);
+                Entry.queue.shift();
+                if (Entry.queue.length == 0) { Entry.dispatcher = null; VoiceChannel.leave(); return; }
+                P(connection, Entry.queue[0].valueOf(), VoiceChannel, Entry);
             }, () => {
                 VoiceChannel.leave(); return;
             }
@@ -69,6 +70,15 @@ function Stop(MessageRequest: Message, Client: Client, Action: PlayerAction, Opt
             channel.leave();
         }
     });
+}
+
+function Skip(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
+    Entry.queue.shift();
+    if (Entry.dispatcher != null) {
+        Entry.dispatcher.emit('end');
+    }
+
+    MessageRequest.channel.send('I have skipped to the next song!');
 }
 
 
@@ -95,12 +105,14 @@ class Queue {
 interface QueueEntry {
     guild: String;
     queue: String[];
+    dispatcher?: StreamDispatcher;
 }
 
 export enum PlayerAction {
     play,
     stop,
-    join
+    join, 
+    skip
 }
 
 var queue = new Queue();

@@ -20,7 +20,8 @@ var Routes: iRoute[] = [
 	{ name:'player', alias: ['play', 'p', 'player'], children: [
 		{ name:'play', controller: Play.Play, alias: [], children: [], default: true },
 		{ name:'stop', controller: Play.Stop, alias: ['stop', 's'], children: [] },
-		{ name:'join', controller: Play.Join, alias: ['join', 'j'], children: [] }
+		{ name:'join', controller: Play.Join, alias: ['join', 'j'], children: [] },
+		{ name:'skip', controller: Play.Skip, alias: ['skip'], children: [] }
 	]},
 	{ name:'github', controller: Github, alias: ['git', 'github'], children: [] },
 ]

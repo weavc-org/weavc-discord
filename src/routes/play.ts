@@ -35,6 +35,10 @@ class play {
     Join(Message: String[], MessageRequest: Message, Client: Client) {
         Player(MessageRequest, Client, PlayerAction.join, null);
     }
+    
+    Skip(Message: String[], MessageRequest: Message, Client: Client) {
+        Player(MessageRequest, Client, PlayerAction.skip, null);
+    }
 }
 
 export var Play = new play();
