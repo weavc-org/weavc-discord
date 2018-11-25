@@ -42,7 +42,8 @@ client.on('ready', () => {
 	});
 });
 
-client.on('message', (msg: Message) => {	
+client.on('message', (msg: Message) => {
+	if (msg.content.toLowerCase() == "good bot") return msg.reply("good human");
 	router.Go(msg, client);
 });
 
