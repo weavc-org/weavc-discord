@@ -7,7 +7,7 @@ An Open source framework for helping to build discord bots/applications.
 
 #### What does it do? 
 
-The aim for version 1.0 is to provide users with common utilities that are often used in discord bots i.e. Audio playback, Paging embeds with emoji reactions and routing requests to the correct method in your application, without having long lists of if statements.
+The aim for version 1.0 is to provide users with common utilities that are often used in discord bots i.e. Audio playback, Paging embeds with emoji reactions and routing messages to the correct method in your application, without having long lists of if statements.
 
 At the moment these 3 things are the focus of the project.
 
