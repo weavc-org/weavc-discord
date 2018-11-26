@@ -1,6 +1,6 @@
 import { Message, Client, RichEmbed } from 'discord.js';
 import { Config, ConfigModel } from '../helpers/config';
-import { PagingOptions, Pager, iRouteController } from '../../../lib/';
+import { PagingOptions, Pager, iRouteController } from '../../../../lib/';
 var config = new Config();
 
 /**
