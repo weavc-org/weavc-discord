@@ -9,9 +9,9 @@ import { Message, Client, MessageReaction, User, RichEmbed } from "discord.js";
  * @param {Array<RichEmbed>} Embeds - Embeds to page through
  * @param {PagingOptions} Options - Options to allow control over certain aspects of Paging functionality 
  */
-export function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Options: PagingOptions = null) {
+export function Pager(MessageRequest: Message, Client: Client, Embeds: Array<RichEmbed>, Options: PagingOptions = null) {
     
-    var m = msg.content.split(' ');
+    var m = MessageRequest.content.split(' ');
 	let prefix = m.shift();
 
     if (Options == null || Options == undefined) {
@@ -20,7 +20,7 @@ export function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Op
 
     var page = Options.startpage.valueOf();
 
-    msg.channel.send(Embeds[page-1])
+    MessageRequest.channel.send(Embeds[page-1])
         .then(function (message: Message) {
             
             message.react("⬅").then((r) => {
@@ -28,8 +28,8 @@ export function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Op
             });
 
             if (!Options.allowallreactions) {
-                var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == msg.author.id && message.id == reaction.message.id;
-                var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == msg.author.id && message.id == reaction.message.id;
+                var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == MessageRequest.author.id && message.id == reaction.message.id;
+                var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == MessageRequest.author.id && message.id == reaction.message.id;
             }
             else {
                 var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && message.id == reaction.message.id && user.id != Client.user.id;

@@ -14,8 +14,8 @@ const ytdl = require('ytdl-core');
 export function Player(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions) {
     var Guild = MessageRequest.guild;
     GetQueueForGuild(Guild.id).then((Entry: QueueEntry) => {
+        if (Action == PlayerAction.add) { Add(MessageRequest, Client, Action, Options, Entry); }
         if (Action == PlayerAction.play) { Play(MessageRequest, Client, Action, Options, Entry); }
-        if (Action == PlayerAction.join) { Join(MessageRequest, Client, Action, Options, Entry); }
         if (Action == PlayerAction.stop) { Stop(MessageRequest, Client, Action, Options, Entry); } 
         if (Action == PlayerAction.skip) { Skip(MessageRequest, Client, Action, Options, Entry); } 
         if (Action == PlayerAction.queue) { QueueShow(MessageRequest, Client, Action, Options, Entry); } 
@@ -34,7 +34,7 @@ export function Player(MessageRequest: Message, Client: Client, Action: PlayerAc
  * @name Play
  * @description Manages adding to guild queue
  */
-function Play(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
+function Add(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
     if (Options.url != undefined || Options.url != '') {
         if (Entry.queue.length < 10) {
             ytdl.getInfo(Options.url, { seek: 0, volume: 1}, (err:any, info:any)=> {
@@ -75,7 +75,7 @@ function QueueShow(MessageRequest: Message, Client: Client, Action: PlayerAction
  * @name Join
  * @description Joins requesting users voice channel and starts playback of guild queue
  */
-function Join(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
+function Play(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Entry: QueueEntry) {
     var voiceChannel = MessageRequest.member.voiceChannel;
 
     if (!voiceChannel) {
@@ -234,7 +234,7 @@ interface VideoLink {
 export enum PlayerAction {
     play,
     stop,
-    join, 
+    add, 
     skip,
     queue, 
     clear

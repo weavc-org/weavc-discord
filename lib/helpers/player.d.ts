@@ -62,7 +62,7 @@ interface VideoLink {
 export declare enum PlayerAction {
     play = 0,
     stop = 1,
-    join = 2,
+    add = 2,
     skip = 3,
     queue = 4,
     clear = 5

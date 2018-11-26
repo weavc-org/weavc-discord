@@ -12,7 +12,7 @@ import { RouteController } from '../../../../lib'
  * @param MessageRequest 
  * @param Client 
  */
-export var Hello : RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+export var Hello : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
     
     var Greetings = ['Hello!', 'Hi', 'Heya', 'o/', 'Hello ^-^'];
     return MessageRequest.reply(Greetings[Math.floor(Math.random() * (Greetings.length))]);

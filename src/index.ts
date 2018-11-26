@@ -27,5 +27,5 @@ export interface Route {
  * @interface RouteController
  */
 export interface RouteController {
-	(Message: String[], MessageRequest: Message, Client: Client): void,
+	(Args: String[], MessageRequest: Message, Client: Client): void,
 }

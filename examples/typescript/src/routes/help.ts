@@ -10,8 +10,8 @@ import { PagingOptions, Pager, RouteController } from '../../../../lib/';
  * 
  * @function
  */
-export var Help : RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
-    var page = Message[1];
+export var Help : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+    var page = Args[0];
     if (page == undefined) {
         page = '1';
     }

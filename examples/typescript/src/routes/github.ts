@@ -12,6 +12,6 @@ import { RouteController } from '../../../../lib'
  * default route for messages not containing a secondary matching command.
  * Sends link to github repo
  */
-export var Github : RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+export var Github : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
     return MessageRequest.channel.send('https://github.com/ChrisWeaver1/weav-discord');
 }

@@ -20,30 +20,30 @@ class play {
 
     constructor(){}
 
-    Play: RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+    Add: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         var options = new PlayerOptions();
-        options.url = Message[1].valueOf();
-        Player(MessageRequest, Client, PlayerAction.play, options);
+        options.url = Args[0].valueOf();
+        Player(MessageRequest, Client, PlayerAction.add, options);
     }
 
-    Stop: RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+    Stop: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.stop, null); 
         return MessageRequest.reply('Yes sir!');
     }
 
-    Join: RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
-        Player(MessageRequest, Client, PlayerAction.join, null);
+    Play: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+        Player(MessageRequest, Client, PlayerAction.play, null);
     }
     
-    Skip: RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+    Skip: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.skip, null);
     }
 
-    Queue: RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+    Queue: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.queue, null);
     }
 
-    Clear: RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+    Clear: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         Player(MessageRequest, Client, PlayerAction.clear, null);
     }
 }
