@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ytdl = require('ytdl-core');
-const lib_1 = require("../../../lib");
+const __1 = require("../../../../");
 /**
  * @name Play
  * @description
@@ -18,25 +18,25 @@ const lib_1 = require("../../../lib");
 class play {
     constructor() {
         this.Play = (Message, MessageRequest, Client) => {
-            var options = new lib_1.PlayerOptions();
+            var options = new __1.PlayerOptions();
             options.url = Message[1].valueOf();
-            lib_1.Player(MessageRequest, Client, lib_1.PlayerAction.play, options);
+            __1.Player(MessageRequest, Client, __1.PlayerAction.play, options);
         };
         this.Stop = (Message, MessageRequest, Client) => {
-            lib_1.Player(MessageRequest, Client, lib_1.PlayerAction.stop, null);
+            __1.Player(MessageRequest, Client, __1.PlayerAction.stop, null);
             return MessageRequest.reply('Yes sir!');
         };
         this.Join = (Message, MessageRequest, Client) => {
-            lib_1.Player(MessageRequest, Client, lib_1.PlayerAction.join, null);
+            __1.Player(MessageRequest, Client, __1.PlayerAction.join, null);
         };
         this.Skip = (Message, MessageRequest, Client) => {
-            lib_1.Player(MessageRequest, Client, lib_1.PlayerAction.skip, null);
+            __1.Player(MessageRequest, Client, __1.PlayerAction.skip, null);
         };
         this.Queue = (Message, MessageRequest, Client) => {
-            lib_1.Player(MessageRequest, Client, lib_1.PlayerAction.queue, null);
+            __1.Player(MessageRequest, Client, __1.PlayerAction.queue, null);
         };
         this.Clear = (Message, MessageRequest, Client) => {
-            lib_1.Player(MessageRequest, Client, lib_1.PlayerAction.clear, null);
+            __1.Player(MessageRequest, Client, __1.PlayerAction.clear, null);
         };
     }
 }

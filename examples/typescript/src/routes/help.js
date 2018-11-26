@@ -1,9 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const discord_js_1 = require("discord.js");
-const config_1 = require("../helpers/config");
-const lib_1 = require("../../../lib/");
-var config = new config_1.Config();
+const lib_1 = require("../../../../lib/");
 /**
  * @name Help
  * @description
@@ -23,7 +21,7 @@ exports.Help = (Message, MessageRequest, Client) => {
         .setAuthor(Client.user.username, Client.user.avatarURL)
         .setTitle("(( -+-+-+- { Help 1 } -+-+-+- ))")
         .setDescription("Help page, a list of commands you can use. The reactions below can be used to scroll through pages!")
-        .addField("Prefixs", config.prefixes.toString().replace(',', ', '))
+        .addField("Prefixs", "M:, m:")
         .addField("help (-h) <#>", "Prints this very help page!")
         .addField("hello (hi, hey, hoi)", "Says hello")
         .addField("github (git)", "Link to find me on GitHub")

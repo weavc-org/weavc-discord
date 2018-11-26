@@ -1,7 +1,5 @@
 import { Message, Client, RichEmbed } from 'discord.js';
-import { Config, ConfigModel } from '../helpers/config';
-import { PagingOptions, Pager, iRouteController } from '../../../../lib/';
-var config = new Config();
+import { PagingOptions, Pager, RouteController } from '../../../../lib/';
 
 /**
  * @name Help
@@ -12,7 +10,7 @@ var config = new Config();
  * 
  * @function
  */
-export var Help : iRouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
+export var Help : RouteController = (Message: String[], MessageRequest: Message, Client: Client) => {
     var page = Message[1];
     if (page == undefined) {
         page = '1';
@@ -23,7 +21,7 @@ export var Help : iRouteController = (Message: String[], MessageRequest: Message
         .setAuthor(Client.user.username, Client.user.avatarURL)
         .setTitle("(( -+-+-+- { Help 1 } -+-+-+- ))") 
         .setDescription("Help page, a list of commands you can use. The reactions below can be used to scroll through pages!")
-        .addField("Prefixs", config.prefixes.toString().replace(',', ', '))
+        .addField("Prefixs", "M:, m:")
         .addField("help (-h) <#>", "Prints this very help page!")
         .addField("hello (hi, hey, hoi)", "Says hello")
         .addField("github (git)", "Link to find me on GitHub")

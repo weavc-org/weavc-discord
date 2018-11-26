@@ -1,6 +1,14 @@
 var Weav = require('../../lib');
 var Discord = require('discord.js')
-var config = require('../typescript/src/config')
+
+try {
+	var config = require('../../config');
+}
+catch (err) {
+	console.log("Could not find config. Run 'npm run config' to generate file, then fill out the values at examples/config.json")
+	process.exit();
+}
+
 
 var Routes = [
     { name:'hello', controller: Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },

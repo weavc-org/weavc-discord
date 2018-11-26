@@ -1,13 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const config_1 = require("./helpers/config");
-const lib_1 = require("../../lib");
+const lib_1 = require("../../../lib");
 const discord_js_1 = require("discord.js");
-const setup_1 = require("./helpers/setup");
 const help_1 = require("../src/routes/help");
 const github_1 = require("../src/routes/github");
 const hello_1 = require("../src/routes/hello");
 const play_1 = require("../src/routes/play");
+try {
+    var config = require('../../config');
+}
+catch (err) {
+    console.log("Could not find config. Run 'npm run config' to generate file, then fill out the values at examples/config.json");
+    process.exit();
+}
 /**
  * @name Routes
  * @description
@@ -29,7 +34,6 @@ var Routes = [
     { name: 'github', controller: github_1.Github, alias: ['git', 'github'], children: [] },
 ];
 const client = new discord_js_1.Client();
-var config = new config_1.Config(process.argv[2] == '--setup');
 var router;
 client.on('ready', () => {
     config.prefixes.push('<@' + client.user.id + '>');
@@ -44,23 +48,10 @@ client.on('message', (msg) => {
         return msg.reply("good human");
     router.Go(msg, client);
 });
-config.on('ready', () => {
-    client.login(config.token.valueOf())
-        .catch((err) => {
-        console.log(err);
-        console.log("\nWe had trouble logging in with the provided token or there is a connection issue between yourself and discord. " +
-            "\nTo run through setup again, run the bot using 'npm run setup'.");
-        process.exit();
-    });
-});
-config.on('setup', () => {
-    setup_1.setup(!(process.argv[2] == '--setup')).then((value) => {
-        config.reload();
-    }, (value) => {
-        console.log('Config not setup. Please run through the setup script or enter the values manually in src/config.json as detailed above.');
-        process.exit();
-    }).catch((err) => {
-        console.log(err);
-        process.exit();
-    });
+client.login(config.token.valueOf())
+    .catch((err) => {
+    console.log(err);
+    console.log("\nWe had trouble logging in with the provided token or there is a connection issue between yourself and discord. " +
+        "\nPlease add your bot token provided by discord to examples/config.json");
+    process.exit();
 });
