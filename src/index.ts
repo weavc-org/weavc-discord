@@ -1,12 +1,12 @@
 
-export { Pager, PagingOptions } from './services/pager'
-export { Router } from './services/router'
-export { Player, PlayerAction, PlayerOptions, GetQueueForGuild } from './services/player'
+export { Pager, PagingOptions } from './helpers/pager'
+export { Router } from './helpers/router'
+export { Player, PlayerAction, PlayerOptions, GetQueueForGuild } from './helpers/player'
 
 import { Message, Client } from 'discord.js'
 
 /**
- * @interface iRoute
+ * @interface Route
  * @description 
  * Properties of a route. 
  * Ensures we can make decisions based on the properties implemented via this interface.
@@ -16,14 +16,16 @@ import { Message, Client } from 'discord.js'
  * @var {iRoute[]} children - Child routes
  * @var {Boolean} default - is this the default child route?
  */
-export interface iRoute {
+export interface Route {
 	name: String,
-	controller?: iRouteController,
+	controller?: RouteController,
 	alias: String[],
-    children?: iRoute[],
+    children?: Route[],
     default?: Boolean,
 }
-
-export interface iRouteController {
+/**
+ * @interface RouteController
+ */
+export interface RouteController {
 	(Message: String[], MessageRequest: Message, Client: Client): void,
 }
