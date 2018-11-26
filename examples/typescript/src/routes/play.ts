@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
-import { Player, PlayerAction, PlayerOptions, iRouteController } from  '../../../lib'
+import { Player, PlayerAction, PlayerOptions, iRouteController } from  '../../../../lib'
 
 
 /**

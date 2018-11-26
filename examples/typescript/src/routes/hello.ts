@@ -1,5 +1,5 @@
 import { Message, Client } from 'discord.js';
-import { iRouteController } from '../../../lib'
+import { iRouteController } from '../../../../lib'
 
 /**
  * @name Hello
