@@ -7,9 +7,10 @@
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
-    "build:example": "tsc -p examples/",
-    "start": "tsc && tsc -p examples/ && node examples/src/bot.js",
-    "setup": "tsc -p examples/ && node examples/src/bot.js --setup",
+    "build:ts": "tsc -p examples/typescript",
+    "start": "tsc && tsc -p examples/typescript && node examples/typescript/src/bot.js",
+    "setup:ts": "tsc && tsc -p examples/typescript/ && node examples/typescript/src/bot.js --setup",
+    "start:js": "node examples/javascript/bot.js",
     "docker:build": "docker build . -t weav-discord",
     "docker:run": "docker run -d --name weav-discord weav-discord",
     "docker:run-attached": "docker run --name weav-discord weav-discord",

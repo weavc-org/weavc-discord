@@ -2,4 +2,3 @@
 node_modules/*
 config.json
 examples/typescript/*.js
-/lib
