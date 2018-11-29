@@ -29,3 +29,13 @@ export interface Route {
 export interface RouteController {
 	(Args: String[], MessageRequest: Message, Client: Client): void,
 }
+
+export interface Result {
+	type? : Boolean;
+	message?: String;
+	payload?: any;
+}
+
+export interface PlayerCallback {
+    (Promise: Promise<Result>) : void;
+}

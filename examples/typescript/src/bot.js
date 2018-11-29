@@ -24,9 +24,9 @@ var Routes = [
     { name: 'hello', controller: hello_1.Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },
     { name: 'help', controller: help_1.Help, alias: ['help', '-h'], children: [] },
     { name: 'player', alias: ['p', 'player'], children: [
-            { name: 'play', controller: play_1.Play.Play, alias: [], children: [], default: true },
+            { name: 'add', controller: play_1.Play.Add, alias: ['add'], children: [], default: true },
             { name: 'stop', controller: play_1.Play.Stop, alias: ['stop', 's'], children: [] },
-            { name: 'join', controller: play_1.Play.Join, alias: ['join', 'j', 'p', 'play'], children: [] },
+            { name: 'play', controller: play_1.Play.Play, alias: ['join', 'j', 'p', 'play'], children: [] },
             { name: 'skip', controller: play_1.Play.Skip, alias: ['skip'], children: [] },
             { name: 'queue', controller: play_1.Play.Queue, alias: ['q', 'queue'], children: [] },
             { name: 'clear', controller: play_1.Play.Clear, alias: ['c', 'clear'], children: [] }

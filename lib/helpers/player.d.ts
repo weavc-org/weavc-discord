@@ -9,7 +9,7 @@ import { Message, Client, StreamDispatcher } from "discord.js";
  * @param {PlayerAction} Action
  * @param {PlayerOptions} Options
  */
-export declare function Player(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions): void;
+export declare function Player(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Callback?: Function): void;
 /**
  * @name GetQueueForGuild
  * @description

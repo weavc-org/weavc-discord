@@ -11,7 +11,7 @@ import { PagingOptions, Pager, RouteController } from '../../../../lib/';
  * @function
  */
 export var Help : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-    var page = Args[0];
+    var page = Args[1];
     if (page == undefined) {
         page = '1';
     }

@@ -17,25 +17,37 @@ const __1 = require("../../../../");
  */
 class play {
     constructor() {
-        this.Play = (Message, MessageRequest, Client) => {
+        this.Add = (Args, MessageRequest, Client) => {
             var options = new __1.PlayerOptions();
-            options.url = Message[1].valueOf();
-            __1.Player(MessageRequest, Client, __1.PlayerAction.play, options);
+            options.url = Args[2] + '';
+            __1.Player(MessageRequest, Client, __1.PlayerAction.add, options, (Promise) => {
+                Promise.then((resolve) => {
+                    if (resolve.message == 'added-to-queue') {
+                        return MessageRequest.channel.send(`Added ${resolve.payload} to the queue.`);
+                    }
+                    if (resolve.message == 'not-a-video' || resolve.message == 'no-url') {
+                        return MessageRequest.channel.send(`Invalid URL given`);
+                    }
+                    if (resolve.message == 'max-queue-size') {
+                        return MessageRequest.channel.send('Queue is at max capacity (10). You can skip songs using `player skip` command or clear the queue using `player clear`');
+                    }
+                }).catch(console.error);
+            });
         };
-        this.Stop = (Message, MessageRequest, Client) => {
+        this.Stop = (Args, MessageRequest, Client) => {
             __1.Player(MessageRequest, Client, __1.PlayerAction.stop, null);
             return MessageRequest.reply('Yes sir!');
         };
-        this.Join = (Message, MessageRequest, Client) => {
-            __1.Player(MessageRequest, Client, __1.PlayerAction.join, null);
+        this.Play = (Args, MessageRequest, Client) => {
+            __1.Player(MessageRequest, Client, __1.PlayerAction.play, null);
         };
-        this.Skip = (Message, MessageRequest, Client) => {
+        this.Skip = (Args, MessageRequest, Client) => {
             __1.Player(MessageRequest, Client, __1.PlayerAction.skip, null);
         };
-        this.Queue = (Message, MessageRequest, Client) => {
+        this.Queue = (Args, MessageRequest, Client) => {
             __1.Player(MessageRequest, Client, __1.PlayerAction.queue, null);
         };
-        this.Clear = (Message, MessageRequest, Client) => {
+        this.Clear = (Args, MessageRequest, Client) => {
             __1.Player(MessageRequest, Client, __1.PlayerAction.clear, null);
         };
     }

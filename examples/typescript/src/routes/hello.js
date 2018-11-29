@@ -11,7 +11,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
  * @param MessageRequest
  * @param Client
  */
-exports.Hello = (Message, MessageRequest, Client) => {
+exports.Hello = (Args, MessageRequest, Client) => {
     var Greetings = ['Hello!', 'Hi', 'Heya', 'o/', 'Hello ^-^'];
     return MessageRequest.reply(Greetings[Math.floor(Math.random() * (Greetings.length))]);
 };

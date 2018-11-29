@@ -39,11 +39,10 @@ export class Router {
 		}
 
 		this.Routes.forEach(Route => {
-			if (Route.alias.some((a) => a.toLowerCase() === Message[0].toLowerCase())) {
-				Message.shift();
-				this.SelectedRoute(Route, Message, 0).then(
+			if (Route.alias.some((alias) => alias.toLowerCase() === Message[0].toLowerCase())) {
+				this.SelectedRoute(Route, Message, 1).then(
 					(R: Route) => {
-						R.controller(Message, MessageRequest, Client);
+						return R.controller(Message, MessageRequest, Client);
 					}, () => {
 						return;
 					}
@@ -71,12 +70,11 @@ export class Router {
 				this.GetDefaultChild(Route).then((Selected)=>{
 					Route.children.forEach(RouteChild => {
 						if (RouteChild.alias.some((a) => a.toLowerCase() === Message[Index].toLowerCase())) {
-							Message.shift();
 							Selected = RouteChild;
 						}
 					})
 					if (Selected) {
-						this.SelectedRoute(Selected, Message, 0).then(
+						this.SelectedRoute(Selected, Message, Index++).then(
 							(R: Route) => {
 								resolve(R);
 							}, () => {

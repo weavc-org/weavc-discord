@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
-import { Player, PlayerAction, PlayerOptions, RouteController } from  '../../../../'
+import { Player, PlayerAction, PlayerOptions, RouteController, Result } from  '../../../../'
 
 
 /**
@@ -22,8 +22,20 @@ class play {
 
     Add: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         var options = new PlayerOptions();
-        options.url = Args[0].valueOf();
-        Player(MessageRequest, Client, PlayerAction.add, options);
+        options.url = Args[2]+'';
+        Player(MessageRequest, Client, PlayerAction.add, options, (promise: Promise<Result>) => {
+            promise.then((resolve) => {
+                if (resolve.message == 'added-to-queue') {
+                    return  MessageRequest.channel.send(`Added ${resolve.payload} to the queue.`);
+                }
+                if (resolve.message == 'not-a-video' || resolve.message == 'no-url') {
+                    return  MessageRequest.channel.send(`Invalid URL given`);
+                }
+                if (resolve.message == 'max-queue-size') {
+                    return MessageRequest.channel.send('Queue is at max capacity (10). You can skip songs using `player skip` command or clear the queue using `player clear`');
+                }
+            }).catch(console.error)
+        });
     }
 
     Stop: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
