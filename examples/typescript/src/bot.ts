@@ -30,7 +30,8 @@ var Routes: Route[] = [
 		{ name:'play', controller: Play.Play, alias: ['join', 'j', 'p', 'play'], children: [] },
 		{ name:'skip', controller: Play.Skip, alias: ['skip'], children: [] },
 		{ name:'queue', controller: Play.Queue, alias: ['q', 'queue'], children: [] },
-		{ name:'clear', controller: Play.Clear, alias: ['c', 'clear'], children: [] }
+		{ name:'clear', controller: Play.Clear, alias: ['c', 'clear'], children: [] },
+		{ name:'help', controller: Play.Help, alias: ['help', 'h'], children: [] }
 	]},
 	{ name:'github', controller: Github, alias: ['git', 'github'], children: [] },
 ]
