@@ -33,13 +33,14 @@ export var Help : RouteController = (Args: String[], MessageRequest: Message, Cl
         .setColor(0xb5130f)
         .setAuthor(Client.user.username, Client.user.avatarURL)
         .setTitle("(( -+-+-+- { Help 2 } -+-+-+- ))") 
-        .setDescription("Player (player, play, p) - Youtube audio playback")
-        .addField("<url>", "Adds youtube video to your guilds queue.")
+        .setDescription("Player (player, p) - Youtube audio playback")
+        .addField("play (j, join, play, p)", "Joins the requesting guild members voice channel and starts playing through the queue.")
+        .addField("add <url>", "Adds youtube video to your guilds queue.")
         .addField("queue (q)", "Shows your guilds queue of videos")
-        .addField("join (j, play, p)", "Joins the requesting guild members voice channel and starts playing queue.")
         .addField("stop (s)", "Halts playback and leaves voice channel.")
         .addField("clear (c)", "Clears your guilds queue.")
         .addField("skip", "Removes the song currently playing/ ready to play from the queue.")
+        .addField("help", "Shows help embed for player.")
         .setTimestamp(new Date())
         .setFooter("Requested by: " + MessageRequest.author.username + "#" + MessageRequest.author.discriminator + " | From: Help | Page: 2");
 

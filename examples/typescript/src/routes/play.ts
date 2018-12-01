@@ -1,6 +1,6 @@
 const ytdl = require('ytdl-core');
-import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
-import { Player, PlayerAction, PlayerOptions, RouteController, PlayerResult } from  '../../../../'
+import { Message, Client, RichEmbed } from 'discord.js';
+import { Player, PlayerOptions, RouteController, PlayerResult } from  '../../../../'
 
 var player = new Player();
 
@@ -111,6 +111,23 @@ class play {
                 }
             }
         ).catch(console.error);
+    }
+
+    Help: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+        var HelpPagePlayer = new RichEmbed()
+            .setColor(0xb5130f)
+            .setAuthor(Client.user.username, Client.user.avatarURL)
+            .setTitle("(( -+-+-+- { Help - Player } -+-+-+- ))") 
+            .setDescription("Player (player, p) - Youtube audio playback")
+            .addField("play (j, join, play, p)", "Joins the requesting guild members voice channel and starts playing through the queue.")
+            .addField("add <url>", "Adds youtube video to your guilds queue.")
+            .addField("queue (q)", "Shows your guilds queue of videos")
+            .addField("stop (s)", "Halts playback and leaves voice channel.")
+            .addField("clear (c)", "Clears your guilds queue.")
+            .addField("skip", "Removes the song currently playing/ ready to play from the queue.")
+            .setTimestamp(new Date())
+            .setFooter("Requested by: " + MessageRequest.author.username + "#" + MessageRequest.author.discriminator + " | From: Player | Page: 1");
+        return MessageRequest.channel.send(HelpPagePlayer);
     }
 }
 
