@@ -8,7 +8,7 @@ import { Message, Client, RichEmbed } from "discord.js";
  * @param {Array<RichEmbed>} Embeds - Embeds to page through
  * @param {PagingOptions} Options - Options to allow control over certain aspects of Paging functionality
  */
-export declare function Pager(msg: Message, Client: Client, Embeds: Array<RichEmbed>, Options?: PagingOptions): void;
+export declare function Pager(MessageRequest: Message, Client: Client, Embeds: Array<RichEmbed>, Options?: PagingOptions): void;
 /**
  * @name PagingOptions
  * @description

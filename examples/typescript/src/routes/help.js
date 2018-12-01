@@ -11,8 +11,8 @@ const lib_1 = require("../../../../lib/");
  *
  * @function
  */
-exports.Help = (Message, MessageRequest, Client) => {
-    var page = Message[1];
+exports.Help = (Args, MessageRequest, Client) => {
+    var page = Args[1];
     if (page == undefined) {
         page = '1';
     }
