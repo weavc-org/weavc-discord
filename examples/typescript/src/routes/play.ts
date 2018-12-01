@@ -26,13 +26,13 @@ class play {
 
     Add: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         var options = new PlayerOptions();
-        options.url = Args[2]+'';
+        options.url = Args[Args.length-1]+'';
         player.Add(MessageRequest, Client, options).then(
             (resolve: PlayerResult) => {
                 if (resolve.message == 'added-to-queue') {
                     return  MessageRequest.channel.send(`Added ${resolve.payload} to the queue.`);
                 }
-                if (resolve.message == 'not-a-video' || resolve.message == 'no-url') {
+                if (resolve.message == 'invalid-url' || resolve.message == 'no-url') {
                     return  MessageRequest.channel.send(`Invalid URL given`);
                 }
                 if (resolve.message == 'max-queue-size') {
@@ -62,7 +62,7 @@ class play {
                     return  MessageRequest.reply(`Please join a voice channel first`);
                 }
                 if (resolve.message == 'playback-started') {
-                    return  MessageRequest.channel.send(`Invalid URL given`);
+                    return  MessageRequest.channel.send(`Yes Sir!`);
                 }
                 if (resolve.message == 'no-queue') {
                     return MessageRequest.channel.send('There is nothing for me to play. Add videos to the queue first: `m: player add <url>`');
@@ -75,10 +75,10 @@ class play {
         player.Skip(MessageRequest, Client, null).then(
             (resolve: PlayerResult) => {
                 if (resolve.message == 'skipped') {
-                    return  MessageRequest.channel.send('Skipped video. Next up: `'+resolve.payload+'`');
+                    return  MessageRequest.channel.send('Skipped, Next up: `'+resolve.payload+'`');
                 }
                 if (resolve.message == 'skipped-no-queue') {
-                    return  MessageRequest.channel.send(`Skipped video`);
+                    return  MessageRequest.channel.send(`Skipped, nothing more to play`);
                 }
             }
         ).catch(console.error);
@@ -107,7 +107,7 @@ class play {
         player.Clear(MessageRequest, Client, null).then(
             (resolve: PlayerResult) => {
                 if (resolve.message == 'cleared') {
-                    return  MessageRequest.channel.send(`I have cleared your queue.`);
+                    return  MessageRequest.channel.send(`Queue cleared`);
                 }
             }
         ).catch(console.error);

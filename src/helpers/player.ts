@@ -10,12 +10,12 @@ const ytdl = require('ytdl-core');
 class Queue {
     queue: QueueEntry[] = [];
 }
-var queue = new Queue();
+
 
 //Change player to class, call individual functions indeividually
 export class Player {
     constructor() {}
-    
+    queue = new Queue();
     
     /**
      * @name Add
@@ -28,6 +28,7 @@ export class Player {
                 if (Options.url != undefined || Options.url != '' || Options.url != null) {
                     if (Entry.queue.length < 10) {
                         ytdl.getInfo(Options.url, { seek: 0, volume: 1}, (err:any, info:any)=> {
+                            if (err) { return resolve({ message: "invalid-url", guildentry: Entry}); }
                             Entry.queue.push({ url: Options.url, title: info.player_response.videoDetails.title });
                             return resolve({ message: "added-to-queue", payload: info.player_response.videoDetails.title, guildentry: Entry })
                         })
@@ -75,15 +76,14 @@ export class Player {
                 if (!voiceChannel) {
                     return resolve({ message: 'no-voice-channel', guildentry: Entry})
                 }
+                if (Entry.queue == undefined || Entry.queue.length <= 0) {
+                    return resolve({ message : 'no-queue', guildentry: Entry })
+                }
 
                 voiceChannel.join()
                     .then((connection: VoiceConnection) => { 
-                        if (Entry.queue == undefined || Entry.queue.length <= 0) return resolve({ message : 'no-queue', guildentry: Entry });
-                        else {
-                            this.Playback(connection, Entry.queue[0].url.valueOf(), voiceChannel, Entry); 
-                            return resolve({ message: 'playback-started', guildentry: Entry});
-                        }
-                            
+                        this.Playback(connection, Entry.queue[0].url.valueOf(), voiceChannel, Entry); 
+                        return resolve({ message: 'playback-started', guildentry: Entry}); 
                     })
                     .catch(console.error);
             })
@@ -122,16 +122,18 @@ export class Player {
             var Guild = MessageRequest.guild;
             this.GetQueueForGuild(Guild.id).then((Entry: QueueEntry) => {
                 if (Entry.dispatcher != null || Entry.dispatcher != undefined) {
-                    if (Entry.queue.length > 1) {
-                        var nextup = Entry.queue[1].title;
-                    }
+                    const q = Entry.queue;
                     Entry.dispatcher.emit('end');
-                    return resolve({ message: 'skipped', payload: nextup, guildentry: Entry})
+                    if (q.length > 1) {
+                        var nextup = q[1].title;
+                        return resolve({ message: 'skipped', payload: nextup, guildentry: Entry})
+                    }
+                    return resolve({ message: 'skipped-no-queue', guildentry: Entry})
                 }
                 else {
                     Entry.queue.shift();
                     if (Entry.queue.length >= 1) {
-                        //MessageRequest.channel.send(`Skipping song. Next up: ${Entry.queue[0].title}`);
+                        var nextup = Entry.queue[0].title;
                         return resolve({ message: 'skipped', payload: nextup, guildentry: Entry })
                     }
                     return resolve({ message: 'skipped-no-queue', guildentry: Entry})
@@ -193,12 +195,12 @@ export class Player {
     GetQueueForGuild(ID: String) : Promise<QueueEntry> {
         return new Promise<QueueEntry> ((resolve, reject)=> {
             //if (queue.queue.length == 0) return reject();
-            queue.queue.forEach((Entry) => {
+            this.queue.queue.forEach((Entry) => {
                 if (Entry.guild == ID) return resolve(Entry);
             })
-
-            queue.queue.push({guild: ID, queue: []})
-            return this.GetQueueForGuild(ID);
+            var entry = {guild: ID, queue: []}
+            this.queue.queue.push(entry);
+            return resolve(entry);
         })
     }
 

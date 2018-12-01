@@ -1,7 +1,16 @@
 import { Message, Client } from "discord.js";
 import { PlayerResult, QueueEntry, PlayerOptions } from '../';
+/**
+ * @class
+ * @name Queue
+ * @description Stores Queue entryies for each guild.
+ */
+declare class Queue {
+    queue: QueueEntry[];
+}
 export declare class Player {
     constructor();
+    queue: Queue;
     /**
      * @name Add
      * @description Manages adding to guild queue
@@ -49,6 +58,7 @@ export declare class Player {
      */
     GetQueueForGuild(ID: String): Promise<QueueEntry>;
 }
+export {};
 /**
  * @name Player
  * @description

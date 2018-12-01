@@ -76,7 +76,7 @@ export class Router {
 					if (Selected) {
 						this.SelectedRoute(Selected, Message, Index++).then(
 							(R: Route) => {
-								resolve(R);
+								return resolve(R);
 							}, () => {
 								return;
 							}
@@ -90,7 +90,7 @@ export class Router {
 				}).catch((err)=> console.log(err));
 			}
 			else {
-				resolve(Route);
+				return resolve(Route);
 			}
 		})
 	}
