@@ -1,5 +1,5 @@
 
 node_modules/*
 config.json
-examples/typescript/*.js
+examples/typescript/**/*.js
 lib/
