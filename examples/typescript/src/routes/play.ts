@@ -129,6 +129,22 @@ class play {
             .setFooter("Requested by: " + MessageRequest.author.username + "#" + MessageRequest.author.discriminator + " | From: Player | Page: 1");
         return MessageRequest.channel.send(HelpPagePlayer);
     }
+
+    Volume: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+        var volume = parseFloat(Args[2].valueOf());
+        if (volume == NaN || volume < 0 || volume > 2) return MessageRequest.channel.send(`Volume must be a number between or equal to 0 and 2`);
+        player.Volume(MessageRequest, Client, { volume: volume }).then(
+            (resolve: PlayerResult) => {
+                if (resolve.message == 'volume-set') {
+                    return  MessageRequest.channel.send(`Volume has been updated`);
+                }
+                if (resolve.message == 'volume-invalid') {
+                    return  MessageRequest.channel.send(`Volume must be a number between or equal to 0 and 2`);
+                }
+            }
+        ).catch(console.error);
+    }
+    
 }
 
 export var Play = new play();

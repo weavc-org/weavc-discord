@@ -46,7 +46,8 @@ export interface PlayerResult {
  * As of now it just contains the URL of the Youtube video 
  */
 export class PlayerOptions {
-    url: string;
+    url?: string;
+    volume?: number;
 }
 
 /**
@@ -60,6 +61,7 @@ export interface QueueEntry {
     guild: String;
     queue: VideoLink[];
     dispatcher?: StreamDispatcher;
+    settings?: PlayerOptions;
 }
 
 /**

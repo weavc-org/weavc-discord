@@ -72,7 +72,7 @@ export class Player {
             var Guild = MessageRequest.guild;
             this.GetQueueForGuild(Guild.id).then((Entry: QueueEntry) => {
                 var voiceChannel = MessageRequest.member.voiceChannel;
-
+            
                 if (!voiceChannel) {
                     return resolve({ message: 'no-voice-channel', guildentry: Entry})
                 }
@@ -159,6 +159,27 @@ export class Player {
         })
     }
 
+        /**
+     * @name Clear
+     * @description Clears guild Queue
+     */
+    Volume(MessageRequest: Message, Client: Client, Options: PlayerOptions)  : Promise<PlayerResult> {
+        return new Promise<PlayerResult> ((resolve, reject)=>{
+            var Guild = MessageRequest.guild;
+            this.GetQueueForGuild(Guild.id).then((Entry: QueueEntry) => {
+                if (Options.volume >= 0 && Options.volume <= 2) {
+                    if (Entry.dispatcher) Entry.dispatcher.setVolume(Options.volume);
+                    Entry.settings.volume = Options.volume;
+                    return resolve({message:"volume-set", guildentry: Entry});
+                }
+                else {
+                    return resolve({ message:"volume-invalid", payload: "Value should be between or equal to 0 and 2", guildentry: Entry })
+                }
+
+            })
+        })
+    }
+
     /**
      * @name Playback
      * @description 
@@ -166,9 +187,14 @@ export class Player {
      * Also manages the queue whilst the guild has an active dispatcher
      */
     private Playback(connection:VoiceConnection, URL: string, VoiceChannel: VoiceChannel, Entry: QueueEntry) {
+        var volume = 1;
+        if (Entry.settings.volume != undefined || Entry.settings.volume >= 0 && Entry.settings.volume <= 2){
+            volume = Entry.settings.volume;
+        }
+
         var stream = ytdl(URL, { filter: 'audioonly' });
         stream.on('error', (err:any)=>{console.log(err)});
-        Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: 1});
+        Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: volume});
 
         Entry.dispatcher.on('error', (a) => { Entry.dispatcher.emit('end'); console.error; });
         Entry.dispatcher.once('end', (a) => { 
@@ -198,45 +224,12 @@ export class Player {
             this.queue.queue.forEach((Entry) => {
                 if (Entry.guild == ID) return resolve(Entry);
             })
-            var entry = {guild: ID, queue: []}
+            var entry = {guild: ID, queue: [], settings: { volume: 1 }}
             this.queue.queue.push(entry);
             return resolve(entry);
         })
     }
-
-
 }
-
-/**
- * @name Player
- * @description 
- * Player utility. Manages audio playback from youtube.  
- * 
- * @param {Message} MessageRequest 
- * @param {Client} Client 
- * @param {PlayerAction} Action 
- * @param {PlayerOptions} Options 
- */
-// export function Player(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Callback: Function = null) {
-//     if (Callback === null) { Callback = () => {} };
-//     var Guild = MessageRequest.guild;
-//     GetQueueForGuild(Guild.id).then((Entry: QueueEntry) => {
-//         if (Action == PlayerAction.add) { Callback(Add(MessageRequest, Client, Action, Options, Entry)); }
-//         if (Action == PlayerAction.play) { Callback(Play(MessageRequest, Client, Action, Options, Entry)); }
-//         if (Action == PlayerAction.stop) { Callback(Stop(MessageRequest, Client, Action, Options, Entry)); } 
-//         if (Action == PlayerAction.skip) { Callback(Skip(MessageRequest, Client, Action, Options, Entry)); } 
-//         if (Action == PlayerAction.queue) { Callback(QueueShow(MessageRequest, Client, Action, Options, Entry)); } 
-//         if (Action == PlayerAction.clear) { Callback(Clear(MessageRequest, Client, Action, Options, Entry)); } 
-//     }, () => {
-//         var Entry: QueueEntry = {
-//             guild: Guild.id,
-//             queue: []
-//         };
-//         queue.queue.push(Entry);
-//         return Player(MessageRequest, Client, Action, Options, Callback);
-//     }).catch((err) => { console.log(err); return null; });
-// }
-
 
 
 
