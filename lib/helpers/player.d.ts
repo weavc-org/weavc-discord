@@ -1,4 +1,54 @@
-import { Message, Client, StreamDispatcher } from "discord.js";
+import { Message, Client } from "discord.js";
+import { PlayerResult, QueueEntry, PlayerOptions } from '../';
+export declare class Player {
+    constructor();
+    /**
+     * @name Add
+     * @description Manages adding to guild queue
+     */
+    Add(MessageRequest: Message, Client: Client, Options: PlayerOptions): Promise<PlayerResult>;
+    /**
+     * @name Queue
+     * @description Sends queue in list format back to guild channel
+     */
+    Queue(MessageRequest: Message, Client: Client, Options: PlayerOptions): Promise<PlayerResult>;
+    /**
+     * @name Play
+     * @description Joins requesting users voice channel and starts playback of guild queue
+     */
+    Play(MessageRequest: Message, Client: Client, Options: PlayerOptions): Promise<PlayerResult>;
+    /**
+     * @name Stop
+     * @description Stops playback for guild, leaves voiceChannel
+     */
+    Stop(MessageRequest: Message, Client: Client, Options: PlayerOptions): Promise<PlayerResult>;
+    /**
+     * @name Skip
+     * @description Skips playback currently in progress or about to be played
+     */
+    Skip(MessageRequest: Message, Client: Client, Options: PlayerOptions): Promise<PlayerResult>;
+    /**
+     * @name Clear
+     * @description Clears guild Queue
+     */
+    Clear(MessageRequest: Message, Client: Client, Options: PlayerOptions): Promise<PlayerResult>;
+    /**
+     * @name Playback
+     * @description
+     * Handles to audio playback to given voice channel
+     * Also manages the queue whilst the guild has an active dispatcher
+     */
+    private Playback;
+    /**
+     * @name GetQueueForGuild
+     * @description
+     * Finds guild in this instance of the Queue class and returns The Queue entry for that guild
+     * @param {String} ID
+     *
+     * @returns {Promise<QueueEntry>}
+     */
+    GetQueueForGuild(ID: String): Promise<QueueEntry>;
+}
 /**
  * @name Player
  * @description
@@ -9,62 +59,3 @@ import { Message, Client, StreamDispatcher } from "discord.js";
  * @param {PlayerAction} Action
  * @param {PlayerOptions} Options
  */
-export declare function Player(MessageRequest: Message, Client: Client, Action: PlayerAction, Options: PlayerOptions, Callback?: Function): void;
-/**
- * @name GetQueueForGuild
- * @description
- * Finds guild in this instance of the Queue class and returns The Queue entry for that guild
- * @param {String} ID
- *
- * @returns {Promise<QueueEntry>}
- */
-export declare function GetQueueForGuild(ID: String): Promise<QueueEntry>;
-/**
- * @class
- * @name PlayerOptions
- * @description
- * Outlines the options that can be passed into the player.
- * At a later date this will help allow volume and other settings per guild.
- * As of now it just contains the URL of the Youtube video
- */
-export declare class PlayerOptions {
-    url: string;
-}
-/**
- * @interface
- * @name QueueEntry
- * @description
- * Stores playback details needed per guild
- * Will also contain settings in the future
- */
-interface QueueEntry {
-    guild: String;
-    queue: VideoLink[];
-    dispatcher?: StreamDispatcher;
-}
-/**
- * @interface
- * @name VideoLink
- * @description
- * Stores details about the linked youtube video
- * Again I plan to expand this at a later date.
- */
-interface VideoLink {
-    url: String;
-    title: String;
-}
-/**
- * @enum
- * @name PlayerAction
- * @description
- * Stores each of the actions the player function can perform with a request
- */
-export declare enum PlayerAction {
-    play = 0,
-    stop = 1,
-    add = 2,
-    skip = 3,
-    queue = 4,
-    clear = 5
-}
-export {};

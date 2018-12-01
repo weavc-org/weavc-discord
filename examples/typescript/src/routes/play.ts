@@ -1,7 +1,8 @@
 const ytdl = require('ytdl-core');
 import { Message, Client, VoiceConnection, VoiceChannel } from 'discord.js';
-import { Player, PlayerAction, PlayerOptions, RouteController, Result } from  '../../../../'
+import { Player, PlayerAction, PlayerOptions, RouteController, PlayerResult } from  '../../../../'
 
+var player = new Player();
 
 /**
  * @name Play
@@ -18,13 +19,16 @@ import { Player, PlayerAction, PlayerOptions, RouteController, Result } from  '.
  */
 class play {
 
+    //Player will always resolve with a 'PlayerResult'. You can use the attached message, payload and guild entry to decided what to do next
+    // note: Payload is of type any and returns very different values dependant on what action is performed.
+
     constructor(){}
 
     Add: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
         var options = new PlayerOptions();
         options.url = Args[2]+'';
-        Player(MessageRequest, Client, PlayerAction.add, options, (promise: Promise<Result>) => {
-            promise.then((resolve) => {
+        player.Add(MessageRequest, Client, options).then(
+            (resolve: PlayerResult) => {
                 if (resolve.message == 'added-to-queue') {
                     return  MessageRequest.channel.send(`Added ${resolve.payload} to the queue.`);
                 }
@@ -34,29 +38,79 @@ class play {
                 if (resolve.message == 'max-queue-size') {
                     return MessageRequest.channel.send('Queue is at max capacity (10). You can skip songs using `player skip` command or clear the queue using `player clear`');
                 }
-            }).catch(console.error)
-        });
+            }
+        ).catch(console.error);
     }
 
     Stop: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-        Player(MessageRequest, Client, PlayerAction.stop, null); 
-        return MessageRequest.reply('Yes sir!');
+        player.Stop(MessageRequest, Client, null).then(
+            (resolve: PlayerResult) => {
+                if (resolve.message == 'channel-left') {
+                    return  MessageRequest.channel.send(`Yes Sir!`);
+                }
+                if (resolve.message == 'no-channel') {
+                    return  MessageRequest.channel.send(`Yes Sir!`);
+                }
+            }
+        ).catch(console.error);
     }
 
     Play: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-        Player(MessageRequest, Client, PlayerAction.play, null);
+        player.Play(MessageRequest, Client, null).then(
+            (resolve: PlayerResult) => {
+                if (resolve.message == 'no-voice-channel') {
+                    return  MessageRequest.reply(`Please join a voice channel first`);
+                }
+                if (resolve.message == 'playback-started') {
+                    return  MessageRequest.channel.send(`Invalid URL given`);
+                }
+                if (resolve.message == 'no-queue') {
+                    return MessageRequest.channel.send('There is nothing for me to play. Add videos to the queue first: `m: player add <url>`');
+                }
+            }
+        ).catch(console.error);
     }
     
     Skip: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-        Player(MessageRequest, Client, PlayerAction.skip, null);
+        player.Skip(MessageRequest, Client, null).then(
+            (resolve: PlayerResult) => {
+                if (resolve.message == 'skipped') {
+                    return  MessageRequest.channel.send('Skipped video. Next up: `'+resolve.payload+'`');
+                }
+                if (resolve.message == 'skipped-no-queue') {
+                    return  MessageRequest.channel.send(`Skipped video`);
+                }
+            }
+        ).catch(console.error);
     }
 
     Queue: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-        Player(MessageRequest, Client, PlayerAction.queue, null);
+        player.Queue(MessageRequest, Client, null).then(
+            (resolve: PlayerResult) => {
+                if (resolve.message == 'queue') {
+                    var message:string = '';
+                    resolve.guildentry.queue.forEach((element, i) => {
+                        var entry = `${i+1}. ${element.title}`;
+                        message = message + entry + '\n';
+                    });
+                    message = '```'+message+'```';
+                    return  MessageRequest.channel.send(message);
+                }
+                if (resolve.message == 'no-queue') {
+                    return  MessageRequest.channel.send('There is nothing in your guilds queue. Add videos to the queue first: `m: player add <url>`');
+                }
+            }
+        ).catch(console.error);
     }
 
     Clear: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-        Player(MessageRequest, Client, PlayerAction.clear, null);
+        player.Clear(MessageRequest, Client, null).then(
+            (resolve: PlayerResult) => {
+                if (resolve.message == 'cleared') {
+                    return  MessageRequest.channel.send(`I have cleared your queue.`);
+                }
+            }
+        ).catch(console.error);
     }
 }
 
