@@ -8,7 +8,6 @@ import { PagingOptions, Pager, RouteController } from '../../../../lib/';
  * Sends help pages back to the requesting channel.
  * Handled by Pager.
  * 
- * @function
  */
 export var Help : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
     var page = Args[1];

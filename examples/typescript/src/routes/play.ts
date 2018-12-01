@@ -11,16 +11,8 @@ var player = new Player();
  * Handles any message requests matching the play routes alias'.
  * 
  * @alias play, p
- * @function default - 
- * default route for messages not containing a secondary command.
- * Takes a youtube link, joins the requesting users voice channel and playsback audio of linked video.
- * @function stop - 
- * Leaves voice channels in requesting server
  */
 class play {
-
-    //Player will always resolve with a 'PlayerResult'. You can use the attached message, payload and guild entry to decided what to do next
-    // note: Payload is of type any and returns very different values dependant on what action is performed.
 
     constructor(){}
 

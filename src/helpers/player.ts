@@ -19,7 +19,11 @@ export class Player {
     
     /**
      * @name Add
-     * @description Manages adding to guild queue
+     * @description Manages adding videos to guild queue
+     * 
+     * @returns Promise<PlayerResult> 
+     * @returns added-to-queue', 'max-queue-size', 'invalid-url', 'no-url'
+     * 
      */
     Add(MessageRequest: Message, Client: Client, Options: PlayerOptions) : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject) => {
@@ -47,7 +51,9 @@ export class Player {
 
     /**
      * @name Queue
-     * @description Sends queue in list format back to guild channel
+     * @description Returns requesting guilds queue back to controller
+     * 
+     * @returns 'no-queue', 'queue'
      */
     Queue(MessageRequest: Message, Client: Client, Options: PlayerOptions) : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject) => {
@@ -66,6 +72,8 @@ export class Player {
     /**
      * @name Play
      * @description Joins requesting users voice channel and starts playback of guild queue
+     * 
+     * @returns 'no-voice-channel', 'no-queue', 'playback-started'
      */
     Play(MessageRequest: Message, Client: Client, Options: PlayerOptions) : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject)=>{
@@ -94,7 +102,9 @@ export class Player {
 
     /**
      * @name Stop
-     * @description Stops playback for guild, leaves voiceChannel
+     * @description Stops playback for guild and leaves voiceChannel
+     * 
+     * @returns 'channel-left', 'no-channel'
      */
     Stop(MessageRequest: Message, Client: Client, Options: PlayerOptions)  : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject)=> {
@@ -116,6 +126,8 @@ export class Player {
     /**
      * @name Skip
      * @description Skips playback currently in progress or about to be played
+     * 
+     * @returns 'skipped', 'skipped-no-queue'
      */
     Skip(MessageRequest: Message, Client: Client, Options: PlayerOptions)  : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject)=>{
@@ -146,6 +158,8 @@ export class Player {
     /**
      * @name Clear
      * @description Clears guild Queue
+     * 
+     * @returns 'cleared'
      */
     Clear(MessageRequest: Message, Client: Client, Options: PlayerOptions)  : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject)=>{
@@ -160,8 +174,10 @@ export class Player {
     }
 
         /**
-     * @name Clear
-     * @description Clears guild Queue
+     * @name Volume
+     * @description sets volume to new values, 0 - 2
+     * 
+     * @returns 'volume-set', 'volume-invalid'
      */
     Volume(MessageRequest: Message, Client: Client, Options: PlayerOptions)  : Promise<PlayerResult> {
         return new Promise<PlayerResult> ((resolve, reject)=>{
@@ -183,7 +199,7 @@ export class Player {
     /**
      * @name Playback
      * @description 
-     * Handles to audio playback to given voice channel
+     * Handles audio playback to voice channel
      * Also manages the queue whilst the guild has an active dispatcher
      */
     private Playback(connection:VoiceConnection, URL: string, VoiceChannel: VoiceChannel, Entry: QueueEntry) {
