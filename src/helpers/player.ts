@@ -173,7 +173,7 @@ export class Player {
         })
     }
 
-        /**
+    /**
      * @name Volume
      * @description sets volume to new values, 0 - 2
      * 
