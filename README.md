@@ -1,17 +1,14 @@
-# weav-discord (discordjs)
-### WORK IN PROGRESS
-#### Please note: 
-Due to this project being in the early stages of development, I will likely be pushing breaking changes every now and again. This will include changes to variable names, interfaces and functionality. If you aren't wiling to deal with this, please hold tight and wait for an official release.
+# weav-discord
+
+[![NPM](https://nodei.co/npm/weav-discord.png)](https://nodei.co/npm/weav-discord/)
 
 ### Description
 
-An Open source framework for helping to build discord bots/applications.
+An Open source framework for helping to build common functionallity in discord bots. Builds off of discord.js to give developers access to common utilities that can be a pain to create yourself.
 
 #### What does it do? 
 
-The aim for version 1.0 is to provide users with common utilities that are often used in discord bots i.e. Audio playback, Paging embeds with reactions and routing messages to the correct function based on the given arguments, without having long lists of if statements.
-
-At the moment these are the primary focus of the project.
+The aim for version 1.0 is to provide users with common utilities that are often used in discord bots i.e. Audio playback, Paging embeds with reactions and routing messages to the correct function based on matching arguments inside a message, without having long lists of if statements.
 
 ### Components
 
@@ -38,7 +35,7 @@ export interface RouteController {
  * controller - Function the request should be passed to if route matches.
  * alias - Array of alias' to match on. i.e. ['help', 'h']
  * children - Child routes. See examples/typescript for more detail. But matches parent, then looks to see if the next index matches any of the children. If not it will go to the default child route.
- * default - The default child route. Will always use the first one if there are multiple.
+ * default - Defines the default child route. Will always use the first one if there are multiple.
 
 The Router uses these routes to select the correct controller to pass the request on to, much like you will see in web frameworks like MVC or expressjs.
 
@@ -46,11 +43,82 @@ I have plans to expand this at a later date, possibly parsing variables from the
 
 #### Pager 
 
-Detail to come. See examples/typescript for now.
+The Pager is a simple way to handle paging embeds in discord. This is often functionality used in help pages for a bot or anything that requires more than just a single page of information. 
+
+##### Usage
+
+The pager is pretty simple to use, you generate your embeds using discord.js' RichEmbed builder, add them all to an array (In the correct order) then send them through to the Pager, alongside your Client Class instance and the Message that triggered it to handle to rest. The Pager also takes options allowing you to apply different controls from the default.
+
+```
+import { Message, Client, RichEmbed } from 'discord.js';
+import { PagingOptions, Pager, RouteController } from '../../../../lib/';
+
+var Page1 = new RichEmbed()
+    .setColor(0xb5130f)
+    .setTitle("This is Page 1")
+
+var Page2 = new RichEmbed()
+    .setColor(0xb5130f)
+    .setTitle("This is Page 2")
+
+var Page3 = new RichEmbed()
+    .setColor(0xb5130f)
+    .setTitle("This is Page 3") 
+
+var embeds: Array<RichEmbed> = [Page1, Page2, Page3]
+
+var options = new PagingOptions();
+options.allowallreactions=true;
+options.timeout=100000;
+options.reactionremoval=true;
+options.startpage=1;
+options.timeoutdelete = false;
+
+Pager(MessageRequest, Client, embeds, options);
+```
+
+##### PagingOptions
+
+- allowallreactions ~ Allows all users to trigger pages if true, only the requesting user can trigger them otherwise. 
+- timeout ~ The time it takes for the bot stop stop responding to reactions on this message.
+- reactionremoval ~ Triggers the page event on both addition and removal of the reaction.
+- timeoutdelete ~ Deletes the embed message once it has timed out.
+
+
+Full example of paging usage can be found here: [examples/typescript/src/routes/help.ts](https://github.com/ChrisWeaver1/weav-discord/blob/master/examples/typescript/src/routes/help.ts)
 
 #### Player
 
-Detail to come. See examples/typescript for now.
+The Player can handle audio playback of youtube videos to a voice channel. It will also manage a playback queue per guild, in a relitivly simple to use manner. 
+
+I recommend looking at [examples/typescript/src/routes/player.ts](https://github.com/ChrisWeaver1/weav-discord/blob/master/examples/typescript/src/routes/player.ts) for a full exmaple of usage, but generally speaking there are functions for adding, playing, skipping, clearing the queue and changing volume that allow you to control everything. 
+
+The more confusing side to the player are the return messages, I tried to implement it so users could write their own messages that are sent back to the discord channel. What I settled on were resolve promises for each function with a PlayerResult as the payload. This was the best solution I could personally think up, it was between that or eventemitters. A PlayerResult consists of:
+- message, which acts like an event trigger I suppose? this is what defines the action that has been performed. 
+- payload, which includes values that the user might want when sending back a message. i.e. the queue of youtube titles for the requesting guild.
+- guildentry, the data I store per guild within the Player, this includes the queue, any settings, the dispatcher attahced to that guild and the ID.
+
+Adding to guild queue:
+```
+Add: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+    var options = new PlayerOptions();
+    options.url = Args[Args.length-1]+'';
+    player.Add(MessageRequest, Client, options).then(
+        (resolve: PlayerResult) => {
+            if (resolve.message == 'added-to-queue') {
+                return  MessageRequest.channel.send(`Added ${resolve.payload} to the queue.`);
+            }
+            if (resolve.message == 'invalid-url' || resolve.message == 'no-url') {
+                return  MessageRequest.channel.send(`Invalid URL given`);
+            }
+            if (resolve.message == 'max-queue-size') {
+                return MessageRequest.channel.send('Queue is at max capacity (10). You can skip songs using `player skip` command or clear the queue using `player clear`');
+            }
+        }
+    ).catch(console.error);
+}
+```
+As you can see I use the PlayerResult message to determine the result of the action and send a message back to the channel based on the result. All potential messages are implemented in the [example](https://github.com/ChrisWeaver1/weav-discord/blob/master/examples/typescript/src/routes/player.ts) which I recommend using as your point of reference when trying to create your own bot implementing this.
 
 ### Can I use this?
 
@@ -114,3 +182,10 @@ npm run docker:attached
 ```
 
 You can edit the package.json commands to fit with your own needs for Docker, the one in there is what I use to host my bot. It will build the project, try to stop and remove the current instance of weav-discord, then run the new version.
+
+-----
+
+I don't think this will get too much traction, this project was mostly just something I wanted to do for myself and to help out a friend who has just started developing and was interested in creating a discord bot. If you are having any issues feel free to contact me via one of methods below or create an issue. Thanks (:
+
+- Email: chris.weaver.work@gmail.com
+- Discord: [Chris#7901](https://discordapp.com/users/206875427631923200)
