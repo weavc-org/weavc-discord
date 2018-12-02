@@ -23,8 +23,12 @@ export interface Route {
     children?: Route[],
     default?: Boolean,
 }
+
 /**
  * @interface RouteController
+ * 
+ * @description
+ * RouteController defines arguments taken by controllers
  */
 export interface RouteController {
 	(Args: String[], MessageRequest: Message, Client: Client): void,

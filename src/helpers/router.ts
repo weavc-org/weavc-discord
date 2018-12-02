@@ -95,7 +95,6 @@ export class Router {
 		})
 	}
 
-
 	/**
 	 * @name GetDefaultChild
 	 * @description Finds the default child and returns it

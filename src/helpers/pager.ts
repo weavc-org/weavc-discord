@@ -59,7 +59,7 @@ export function Pager(MessageRequest: Message, Client: Client, Embeds: Array<Ric
                 }
             })
 
-            // trigger 'collect' event on removal of reaction, if valid
+            // triggers 'collect' event on removal of reaction
             Client.on('messageReactionRemove', (reaction, user) => { 
                 if (Options.reactionremoval) {
                     if (!back.ended && back.filter(reaction, user)) { back.emit('collect'); }
