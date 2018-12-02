@@ -1,6 +1,10 @@
-# weav-discord
+# weav-discord-lite
 
-[![NPM](https://nodei.co/npm/weav-discord.png)](https://nodei.co/npm/weav-discord/)
+[![NPM](https://nodei.co/npm/weav-discord.png)](https://nodei.co/npm/weav-discord-lite/)
+
+Note: This is the lite version of the package. It comes with everything except the audio playback from youtube and the dependancies that come with that. For the full verson, with Youtube playback etc follow the links below.
+- [npm](https://www.npmjs.com/package/weav-discord)
+- [github](https://github.com/ChrisWeaver1/weav-discord)
 
 ### Description
 
@@ -87,74 +91,16 @@ Pager(MessageRequest, Client, embeds, options);
 
 Full example of paging usage can be found here: [examples/typescript/src/routes/help.ts](https://github.com/ChrisWeaver1/weav-discord/blob/master/examples/typescript/src/routes/help.ts)
 
-#### Player
-
-The Player can handle audio playback of youtube videos to a voice channel. It will also manage a playback queue per guild, in a relitivly simple to use manner. 
-
-I recommend looking at [examples/typescript/src/routes/player.ts](https://github.com/ChrisWeaver1/weav-discord/blob/master/examples/typescript/src/routes/player.ts) for a full exmaple of usage, but generally speaking there are functions for adding, playing, skipping, clearing the queue and changing volume that allow you to control everything. 
-
-The more confusing side to the player are the return messages, I tried to implement it so users could write their own messages that are sent back to the discord channel. What I settled on were resolve promises for each function with a PlayerResult as the payload. This was the best solution I could personally think up, it was between that or eventemitters. A PlayerResult consists of:
-- message, which acts like an event trigger I suppose? this is what defines the action that has been performed. 
-- payload, which includes values that the user might want when sending back a message. i.e. the queue of youtube titles for the requesting guild.
-- guildentry, the data I store per guild within the Player, this includes the queue, any settings, the dispatcher attahced to that guild and the ID.
-
-Adding to guild queue:
-```
-Add: RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-    var options = new PlayerOptions();
-    options.url = Args[Args.length-1]+'';
-    player.Add(MessageRequest, Client, options).then(
-        (resolve: PlayerResult) => {
-            if (resolve.message == 'added-to-queue') {
-                return  MessageRequest.channel.send(`Added ${resolve.payload} to the queue.`);
-            }
-            if (resolve.message == 'invalid-url' || resolve.message == 'no-url') {
-                return  MessageRequest.channel.send(`Invalid URL given`);
-            }
-            if (resolve.message == 'max-queue-size') {
-                return MessageRequest.channel.send('Queue is at max capacity (10). You can skip songs using `player skip` command or clear the queue using `player clear`');
-            }
-        }
-    ).catch(console.error);
-}
-```
-As you can see I use the PlayerResult message to determine the result of the action and send a message back to the channel based on the result. All potential messages are implemented in the [example](https://github.com/ChrisWeaver1/weav-discord/blob/master/examples/typescript/src/routes/player.ts) which I recommend using as your point of reference when trying to create your own bot implementing this.
-
 ### Can I use this?
 
 At the moment this project is in rather early development, See note at top. However if you want to try.. go ahead. 
 
 #### Installation
 
-To build the depenancies for this project, you will likely need to do afew things before installing this. This is mostly due to the Player (Audio playback from youtube) needing node-opus, ffmpeg and ytdl-core to run. I may split this into a seperate package at some date so these aren't required dependancies.
-
-##### Windows - windows-build-tools
-Note: Running the project from windows subsystem (Ubuntu) you will have issues with the Player. Run it from powershell instead.
+The lite version is simple to install at the moment, since we don't have to build any of the pesky depancies that come with audio/voice playback.
 ```
-Open an admin powershell and run the following: 
-
-npm install -g windows-build-tools
-npm install -g node-gyp
+npm install weav-discord-lite
 ```
-
-##### Linux 
-```
-apt-get install python make g++ gcc
-```
-
-At this point you _should_ be able compile all of the dependancies. Go ahead and install weav-discord.
-```
-npm install weav-discord
-```
-
-##### Windows follow-up
-
-If you are having issues installing this, make sure the previous steps finished correctly without errors, if they didn't, try running them once again. It may also be worth closing all instances of Powershell (this includes VSCode or any other editor with built in PS) and restart them. 
-
-If you are still struggling, it might be best to read through the help and installation sections on the following pages:
-
-- [node-gyp](https://github.com/nodejs/node-gyp)
-- [windows-build-tools](https://github.com/felixrieseberg/windows-build-tools)
 
 #### Examples
 
