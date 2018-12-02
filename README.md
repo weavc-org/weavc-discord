@@ -2,6 +2,10 @@
 
 [![NPM](https://nodei.co/npm/weav-discord.png)](https://nodei.co/npm/weav-discord/)
 
+Note: This is the full version of this package. There is also a lite version which I recommend using if you aren't using the audio/voice playback functionality. Follow the links below if you are interested:
+- [npm](https://www.npmjs.com/package/weav-discord-lite)
+- [github](https://github.com/ChrisWeaver1/weav-discord/tree/master-lite) 
+
 ### Description
 
 An Open source framework for helping to build common functionallity in discord bots. Builds off of discord.js to give developers access to common utilities that can be a pain to create yourself.
@@ -126,7 +130,7 @@ At the moment this project is in rather early development, See note at top. Howe
 
 #### Installation
 
-To build the depenancies for this project, you will likely need to do afew things before installing this. This is mostly due to the Player (Audio playback from youtube) needing node-opus, ffmpeg and ytdl-core to run. I may split this into a seperate package at some date so these aren't required dependancies.
+To build the depenancies for this project, you will likely need to do afew things before installing this. This is mostly due to the Player (Audio playback from youtube) needing node-opus, ffmpeg and ytdl-core to run. If you don't want this functionality, I have also released a lite version which doesn't have the Player or these depenacies. See note at top ^. 
 
 ##### Windows - windows-build-tools
 Note: Running the project from windows subsystem (Ubuntu) you will have issues with the Player. Run it from powershell instead.
