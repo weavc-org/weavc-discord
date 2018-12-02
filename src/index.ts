@@ -1,7 +1,6 @@
 
 export { Pager, PagingOptions } from './helpers/pager'
 export { Router } from './helpers/router'
-export { Player } from './helpers/player'
 
 import { Message, Client, StreamDispatcher } from 'discord.js'
 

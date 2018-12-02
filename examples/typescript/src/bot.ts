@@ -3,7 +3,6 @@ import { Message, Client } from 'discord.js';
 import { Help } from '../src/routes/help';
 import { Github } from '../src/routes/github';
 import { Hello } from '../src/routes/hello';
-import { Play } from '../src/routes/play';
 
 try {
 	var config = require('../../config');
@@ -24,16 +23,6 @@ catch (err) {
 var Routes: Route[] = [
 	{ name:'hello', controller: Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },
 	{ name:'help', controller: Help, alias: ['help', 'h'], children: [] },
-	{ name:'player', alias: ['p', 'player'], children: [
-		{ name:'add', controller: Play.Add, alias: ['add'], children: [], default: true},
-		{ name:'stop', controller: Play.Stop, alias: ['stop', 's'], children: [] },
-		{ name:'play', controller: Play.Play, alias: ['join', 'j', 'p', 'play'], children: [] },
-		{ name:'skip', controller: Play.Skip, alias: ['skip'], children: [] },
-		{ name:'queue', controller: Play.Queue, alias: ['q', 'queue'], children: [] },
-		{ name:'clear', controller: Play.Clear, alias: ['c', 'clear'], children: [] },
-		{ name:'volume', controller: Play.Volume, alias: ['v', 'volume'], children: [] },
-		{ name:'help', controller: Play.Help, alias: ['help', 'h'], children: [] }
-	]},
 	{ name:'github', controller: Github, alias: ['git', 'github'], children: [] },
 ]
 
