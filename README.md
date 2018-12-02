@@ -1,6 +1,6 @@
 # weav-discord-lite
 
-[![NPM](https://nodei.co/npm/weav-discord.png)](https://nodei.co/npm/weav-discord-lite/)
+[![NPM](https://nodei.co/npm/weav-discord-lite.png)](https://nodei.co/npm/weav-discord-lite/)
 
 Note: This is the lite version of the package. It comes with everything except the audio playback from youtube and the dependancies that come with that. For the full verson, with Youtube playback etc follow the links below.
 - [npm](https://www.npmjs.com/package/weav-discord)
