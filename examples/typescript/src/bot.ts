@@ -1,9 +1,6 @@
 import { Router, Route } from '../../../lib';
 import { Message, Client } from 'discord.js';
-import { Help } from '../src/routes/help';
-import { Github } from '../src/routes/github';
-import { Hello } from '../src/routes/hello';
-import { Play } from '../src/routes/play';
+import { Routes } from './routes/'
 
 try {
 	var config = require('../../config');
@@ -13,36 +10,12 @@ catch (err) {
 	process.exit();
 }
 
-
-/**
- * @name Routes
- * @description 
- * Array of valid class routes.
- * If one of the alias' matches the first index of Message, use matched class.
- * Defaults to index 0.
- */
-var Routes: Route[] = [
-	{ name:'hello', controller: Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },
-	{ name:'help', controller: Help, alias: ['help', 'h'], children: [] },
-	{ name:'player', alias: ['p', 'player'], children: [
-		{ name:'add', controller: Play.Add, alias: ['add'], children: [], default: true},
-		{ name:'stop', controller: Play.Stop, alias: ['stop', 's'], children: [] },
-		{ name:'play', controller: Play.Play, alias: ['join', 'j', 'p', 'play'], children: [] },
-		{ name:'skip', controller: Play.Skip, alias: ['skip'], children: [] },
-		{ name:'queue', controller: Play.Queue, alias: ['q', 'queue'], children: [] },
-		{ name:'clear', controller: Play.Clear, alias: ['c', 'clear'], children: [] },
-		{ name:'volume', controller: Play.Volume, alias: ['v', 'volume'], children: [] },
-		{ name:'help', controller: Play.Help, alias: ['help', 'h'], children: [] }
-	]},
-	{ name:'github', controller: Github, alias: ['git', 'github'], children: [] },
-]
-
 const client = new Client();
 var router:Router;
 
 client.on('ready', () => {
 	config.prefixes.push('<@'+client.user.id+'>');
-	router = new Router(Routes, config.prefixes);
+	router = new Router(Routes);
 	console.log(`Logged in as ${client.user.tag}!`);
 
 	process.on('uncaughtException', function(err) {
