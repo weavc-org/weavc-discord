@@ -14,11 +14,9 @@ import { Route } from "..";
 export class Router {
 	
 	Routes: Array<Route> = [];
-	Prefixes: String[] = [];
 
-	constructor(Routes: Array<Route>, Prefixes: String[] = []) {
+	constructor(Routes: Array<Route>) {
 		this.Routes = Routes;
-		this.Prefixes = Prefixes;
 	}
 
 	/**
@@ -33,13 +31,8 @@ export class Router {
 
 		var Message = MessageRequest.content.split(' ');
 
-		if (this.Prefixes.length > 0) {
-			let Prefix = Message.shift();
-			if (!this.Prefixes.some((p:string) => p === Prefix)) return;
-		}
-
 		this.Routes.forEach(Route => {
-			if (Route.alias.some((alias) => alias.toLowerCase() === Message[0].toLowerCase())) {
+			if (Route.alias.some((alias) => alias.toLowerCase() == Message[0].toLowerCase())) {
 				this.SelectedRoute(Route, Message, 1).then(
 					(R: Route) => {
 						return R.controller(Message, MessageRequest, Client);
@@ -66,15 +59,17 @@ export class Router {
 	 */
 	private SelectedRoute(Route: Route, Message: String[], Index: number) : Promise<Route> {
 		return new Promise<Route> ((resolve, reject)=> {
+			if (Message[Index] == undefined) { return resolve(Route); }
 			if (Route.children != undefined && Route.children.length > 0) {
 				this.GetDefaultChild(Route).then((Selected)=>{
+					
 					Route.children.forEach(RouteChild => {
-						if (RouteChild.alias.some((a) => a.toLowerCase() === Message[Index].toLowerCase())) {
+						if (RouteChild.alias.some((a) => a.toLowerCase() == Message[Index].toLowerCase())) {
 							Selected = RouteChild;
 						}
 					})
 					if (Selected) {
-						this.SelectedRoute(Selected, Message, Index++).then(
+						this.SelectedRoute(Selected, Message, Index+1).then(
 							(R: Route) => {
 								return resolve(R);
 							}, () => {
@@ -105,10 +100,9 @@ export class Router {
 	private GetDefaultChild(Route: Route) : Promise<Route> {
 		return new Promise<Route> ((resolve, reject) => {
 			Route.children.forEach((RouteChild) => {
-				if (RouteChild.default === true) resolve(RouteChild);
-			},()=>{
-				resolve(undefined);
+				if (RouteChild.default == true) return resolve(RouteChild);
 			});
+			return resolve(undefined);
 		})
 	}
 }
