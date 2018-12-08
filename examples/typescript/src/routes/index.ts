@@ -2,7 +2,6 @@
 import { Route, RouteController } from '../../../../lib';
 import { Message, Client } from 'discord.js';
 import { Help } from './help';
-import { Github } from './github';
 import { Hello } from './hello';
 
 try {
@@ -26,3 +25,6 @@ export var GoodBot : RouteController = (Args: String[], MessageRequest: Message,
     return MessageRequest.reply('good human!');
 }
 
+export var Github : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+    return MessageRequest.channel.send('https://github.com/ChrisWeaver1/weav-discord');
+}
