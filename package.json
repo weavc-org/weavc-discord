@@ -1,9 +1,15 @@
 {
   "name": "weav-discord",
-  "version": "0.0.2",
+  "version": "1.1.0",
   "description": "",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
+  "author": "Chris Weaver",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChrisWeaver1/weav-discord"
+  },
   "scripts": {
     "build": "tsc",
     "prepare": "npm run build",
@@ -18,12 +24,6 @@
     "docker:remove": "docker container rm weav-discord",
     "docker": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run",
     "docker:attached": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run-attached"
-  },
-  "author": "Chris Weaver",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ChrisWeaver1/weav-discord"
   },
   "dependencies": {
     "@types/node": "^10.12.9",
