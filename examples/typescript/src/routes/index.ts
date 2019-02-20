@@ -4,6 +4,7 @@ import { Message, Client } from 'discord.js';
 import { Help } from './help';
 import { Hello } from './hello';
 import { Play } from './play';
+import { List } from './list';
 
 try {
 	var config = require('../../../config');
@@ -11,6 +12,14 @@ try {
 catch (err) {
 	console.log("Could not find config. Run 'npm run config' to generate file, then fill out the values at examples/config.json")
 	process.exit();
+}
+
+export var GoodBot : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+    return MessageRequest.reply('good human!');
+}
+
+export var Github : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
+    return MessageRequest.channel.send('https://github.com/ChrisWeaver1/weav-discord');
 }
 
 export var Routes : Route[] = [
@@ -28,14 +37,9 @@ export var Routes : Route[] = [
             { name:'help', controller: Play.Help, alias: ['help', 'h'], children: [] }
         ]},
         { name:'github', controller: Github, alias: ['git', 'github'], children: [] },
+        { name:'list', alias: ['l', 'list'], children: [
+            { name:'create', controller: List.Create, alias: ['c', 'create'], children: [] },
+        ] },
     ] },
     { name:"good", alias: ['good'], children: [{ name:"bot", alias: ['bot'], controller: GoodBot, children: []}]}
 ]
-
-export var GoodBot : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-    return MessageRequest.reply('good human!');
-}
-
-export var Github : RouteController = (Args: String[], MessageRequest: Message, Client: Client) => {
-    return MessageRequest.channel.send('https://github.com/ChrisWeaver1/weav-discord');
-}

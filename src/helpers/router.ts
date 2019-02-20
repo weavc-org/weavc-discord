@@ -35,6 +35,7 @@ export class Router {
 			if (Route.alias.some((alias) => alias.toLowerCase() == Message[0].toLowerCase())) {
 				this.SelectedRoute(Route, Message, 1).then(
 					(R: Route) => {
+						console.log(R)
 						return R.controller(Message, MessageRequest, Client);
 					}, () => {
 						return;
