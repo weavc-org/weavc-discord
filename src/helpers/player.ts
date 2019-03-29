@@ -203,23 +203,29 @@ export class Player {
      * Also manages the queue whilst the guild has an active dispatcher
      */
     private Playback(connection:VoiceConnection, URL: string, VoiceChannel: VoiceChannel, Entry: QueueEntry) {
+        console.log('playback', URL)
+        console.log('start queue', Entry.queue)
         var volume = 1;
         if (Entry.settings.volume != undefined || Entry.settings.volume >= 0 && Entry.settings.volume <= 2){
             volume = Entry.settings.volume;
         }
 
         var stream = ytdl(URL, { filter: 'audioonly' });
-        stream.on('error', (err:any)=>{console.log(err)});
+        stream.on('error', (err:any)=>{ console.log(err) });
         Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: volume});
 
-        Entry.dispatcher.on('error', (a) => { Entry.dispatcher.emit('end'); console.error; });
+        Entry.dispatcher.on('error', (a) => { Entry.dispatcher.emit('end'); console.log(a); });
         Entry.dispatcher.once('end', (a) => { 
+            console.log('end: ', a)
             this.GetQueueForGuild(VoiceChannel.guild.id).then(
                 (e) => { 
+                    console.log(e.guild);
+                    console.log(e.queue);
                     e.queue.shift();
-                    if (e.queue.length <= 0) { e.dispatcher = null; VoiceChannel.leave(); return; }
-                    else { e.dispatcher = null; this.Playback(connection, e.queue[0].url.valueOf(), VoiceChannel, e); }
+                    if (e.queue.length <= 0) { console.log('length 0'); e.dispatcher = null; VoiceChannel.leave(); return; }
+                    else { e.dispatcher = null; console.log('playing next'); this.Playback(connection, e.queue[0].url.valueOf(), VoiceChannel, e); }
                 }, () => {
+                    console.log('didnt find guild?')
                     Entry.dispatcher = null; VoiceChannel.leave(); return;
                 }
             ).catch(console.error);
