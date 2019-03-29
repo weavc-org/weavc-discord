@@ -214,7 +214,7 @@ export class Player {
         stream.on('error', (err:any)=>{ console.log(err) });
         Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: volume});
 
-        Entry.dispatcher.on('error', (a) => { Entry.dispatcher.emit('end'); console.log(a); });
+        Entry.dispatcher.on('error', (a) => { console.log('dispatcher error', a); Entry.dispatcher.emit('end'); });
         Entry.dispatcher.once('end', (a) => { 
             console.log('end: ', a)
             this.GetQueueForGuild(VoiceChannel.guild.id).then(
