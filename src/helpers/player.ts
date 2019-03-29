@@ -215,10 +215,10 @@ export class Player {
         Entry.dispatcher.on('error', (a) => { Entry.dispatcher.emit('end'); console.error; });
         Entry.dispatcher.once('end', (a) => { 
             this.GetQueueForGuild(VoiceChannel.guild.id).then(
-                (Entry) => { 
-                    Entry.queue.shift();
-                    if (Entry.queue.length <= 0) { Entry.dispatcher = null; VoiceChannel.leave(); return; }
-                    else { Entry.dispatcher = null; this.Playback(connection, Entry.queue[0].url.valueOf(), VoiceChannel, Entry); }
+                (e) => { 
+                    e.queue.shift();
+                    if (e.queue.length <= 0) { e.dispatcher = null; VoiceChannel.leave(); return; }
+                    else { e.dispatcher = null; this.Playback(connection, e.queue[0].url.valueOf(), VoiceChannel, e); }
                 }, () => {
                     Entry.dispatcher = null; VoiceChannel.leave(); return;
                 }
