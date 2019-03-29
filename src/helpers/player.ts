@@ -213,7 +213,7 @@ export class Player {
         var stream = ytdl(URL, { filter: 'audioonly' });
         stream.on('error', (err:any)=>{ console.log(err) });
         Entry.dispatcher = connection.playStream(stream, { seek: 0, volume: volume});
-
+        Entry.dispatcher.on('debug', (a) => { console.log('dispatcher debug: ', a); });
         Entry.dispatcher.on('error', (a) => { console.log('dispatcher error', a); Entry.dispatcher.emit('end'); });
         Entry.dispatcher.once('end', (a) => { 
             console.log('end: ', a)
