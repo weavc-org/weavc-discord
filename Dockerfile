@@ -4,7 +4,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN apt-get install python make g++ gcc
+RUN apt-get install python make g++ gcc ffmpeg
 RUN npm install
 
 COPY . .
