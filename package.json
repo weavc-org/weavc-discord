@@ -17,7 +17,7 @@
     "start": "tsc && tsc -p examples/typescript && node examples/typescript/src/bot.js",
     "config": "echo '{\"token\":\"\",\"prefixes\":[]}' > examples/config.json",
     "start:js": "node examples/javascript/bot.js",
-    "docker:build": "docker build . -t weav-discord",
+    "docker:build": "docker build --no-cache . -t weav-discord",
     "docker:run": "docker run -d --name weav-discord weav-discord",
     "docker:run-attached": "docker run --name weav-discord weav-discord",
     "docker:stop": "docker container stop weav-discord",
