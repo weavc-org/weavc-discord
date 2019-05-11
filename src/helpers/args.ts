@@ -1,3 +1,37 @@
+export interface ArgParseOptions {
+    name: string;
+    flags: string[];
+    exists?: boolean;
+    getValue: boolean;
+    value: string;
+}
+
+
+export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : any {
+    let model: any = {};
+    
+    for(let i = 0; i < ArgOptions.length; i++) {
+        let Option = ArgOptions[i];
+        if (!ArgExists(Option.flags, message)) {
+            Option.exists = false;
+            model[Option.name] = Option;
+            continue;
+        }
+
+        Option.exists = true;
+        if (Option.getValue) {
+            Option.value = ArgGetValue(Option.flags, message);
+            model[Option.name] = Option;
+            continue;
+        }
+        else {
+            model[Option.name] = Option;
+            continue;
+        }
+    }
+
+    return model;
+}
 
 /**
  * searches given message for flags and finds the value, associated with it.
@@ -6,7 +40,7 @@
  * @param message message to search on
  * 
  */
-export function ArgGetValue(flags: string[], message: string) : string {
+function ArgGetValue(flags: string[], message: string) : string {
     for (var i = 0; i < flags.length; i++) {
         let flag = flags[i];
         if (message.indexOf(' '+flag+' ') >= 0) {
@@ -39,7 +73,7 @@ export function ArgGetValue(flags: string[], message: string) : string {
  * @param message message to search on
  * 
  */
-export function ArgExists(flags: string[], message: string) : boolean {
+function ArgExists(flags: string[], message: string) : boolean {
     for (var i = 0; i < flags.length; i++) {
         let flag = flags[i];
         let messasgeSplit = message.split(' ');

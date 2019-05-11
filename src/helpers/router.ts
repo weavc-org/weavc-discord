@@ -1,5 +1,6 @@
 import { Message, Client } from "discord.js";
 import { Route } from "..";
+import { ParseArgs } from "./args";
 
 
 /**
@@ -29,13 +30,21 @@ export class Router {
 	 */
 	Go(MessageRequest: Message, Client: Client) {
 
-		var Message = MessageRequest.content.split(' ');
+		var Message = [];
+		var split = MessageRequest.content.split(' ');
+		if (split) Message = split;
 
 		this.Routes.forEach(Route => {
 			if (Route.alias.some((alias) => alias.toLowerCase() == Message[0].toLowerCase())) {
 				this.SelectedRoute(Route, Message, 1).then(
 					(R: Route) => {
-						return R.controller(Message, MessageRequest, Client);
+						if (R.argOptions) {
+							let Args = ParseArgs(MessageRequest.content, R.argOptions);
+							return R.controller(Message, MessageRequest, Client, Args);
+						}
+						else {
+							return R.controller(Message, MessageRequest, Client);
+						}
 					}, () => {
 						return;
 					}
