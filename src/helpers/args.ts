@@ -1,31 +1,41 @@
-export interface ArgParseOptions {
-    name: string;
-    flags: string[];
-    exists?: boolean;
-    getValue: boolean;
-    value: string;
+import { ArgParseOptions } from "..";
+
+export class ArgsModel {
+    values: ArgParseOptions[] = [];
+
+    getExists(name: string) : boolean {
+        let element = this.values.find(o => o.name == name);
+        if (!element) return false;
+        else return element.exists;
+    }
+
+    getValue(name: string) : string {
+        let element = this.values.find(o => o.name == name);
+        if (!element) return undefined;
+        else return element.value;
+    }    
+
 }
 
-
-export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : any {
-    let model: any = {};
+export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : ArgsModel {
+    let model = new ArgsModel();
     
     for(let i = 0; i < ArgOptions.length; i++) {
         let Option = ArgOptions[i];
+        model.values.push(Option);
+
         if (!ArgExists(Option.flags, message)) {
             Option.exists = false;
-            model[Option.name] = Option;
             continue;
         }
 
         Option.exists = true;
+
         if (Option.getValue) {
             Option.value = ArgGetValue(Option.flags, message);
-            model[Option.name] = Option;
             continue;
         }
         else {
-            model[Option.name] = Option;
             continue;
         }
     }
