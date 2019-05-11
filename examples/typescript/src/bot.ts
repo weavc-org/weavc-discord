@@ -18,9 +18,9 @@ client.on('ready', () => {
 	router = new Router(Routes);
 	console.log(`Logged in as ${client.user.tag}!`);
 
-	process.on('uncaughtException', function(err) {
-		console.log('Caught exception: ' + err.toString());
-	});
+	// process.on('uncaughtException', function(err) {
+	// 	console.log('Caught exception: ' + err.toString());
+	// });
 });
 
 client.on('message', (msg: Message) => {

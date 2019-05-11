@@ -1,9 +1,10 @@
 
-export { Pager, PagingOptions } from './helpers/pager'
-export { Router } from './helpers/router'
-export { Player } from './helpers/player'
-
-import { Message, Client, StreamDispatcher } from 'discord.js'
+export { Pager, PagingOptions } from './helpers/pager';
+export { Router } from './helpers/router';
+export { Player } from './helpers/player';
+export { ArgsModel } from './helpers/args';
+import { ArgsModel } from './helpers/args';
+import { Message, Client, StreamDispatcher } from 'discord.js';
 
 /**
  * @interface Route
@@ -22,6 +23,7 @@ export interface Route {
 	alias: String[],
     children?: Route[],
     default?: Boolean,
+    argOptions?: ArgParseOptions[],
 }
 
 /**
@@ -31,7 +33,7 @@ export interface Route {
  * RouteController defines arguments taken by controllers
  */
 export interface RouteController {
-	(Args: String[], MessageRequest: Message, Client: Client): void,
+	(Args: String[], MessageRequest: Message, Client: Client, ArgModel? : ArgsModel): void,
 }
 
 export interface PlayerResult {
@@ -93,4 +95,12 @@ export enum PlayerAction {
     skip,
     queue, 
     clear
+}
+
+export interface ArgParseOptions {
+    name: string;
+    flags: string[];
+    exists?: boolean;
+    getValue?: boolean;
+    value?: string;
 }
