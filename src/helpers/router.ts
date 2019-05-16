@@ -39,6 +39,10 @@ export class Router {
 				this.SelectedRoute(Route, Message, 1).then(
 					(R: Route) => {
 						if (R.argOptions) {
+							// needs documenting
+							if (R.argOptions.find(opt => opt.name == '!default')) {
+								R.argOptions.find(opt => opt.name == '!default').flags=R.alias;
+							}
 							let Args = ParseArgs(MessageRequest.content, R.argOptions);
 							return R.controller(Message, MessageRequest, Client, Args);
 						}

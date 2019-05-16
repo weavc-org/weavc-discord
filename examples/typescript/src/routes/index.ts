@@ -25,20 +25,26 @@ export var Search : RouteController = (Args: String[], MessageRequest: Message, 
 }
 
 let TestArgsParse : ArgParseOptions[] = [];
-let ArgsSearch : ArgParseOptions = {
-    name: 'search',
-    flags: ['-s', '--search', 'search'],
+let Default : ArgParseOptions = {
+    name: '!default',
+    flags: [],
     getValue: true
 };
 let ArgsHelp : ArgParseOptions = {
     name: 'help',
     flags: ['-h', '--help']
 };
-TestArgsParse.push(ArgsSearch);
+let ArgValue : ArgParseOptions = {
+    name: 'value',
+    flags: ['-v', '--value'],
+    getValue: true
+};
+TestArgsParse.push(Default);
 TestArgsParse.push(ArgsHelp);
+TestArgsParse.push(ArgValue);
 
 
-export var Routes : Route[] = [
+export const Routes : Route[] = [
     { name:'prefix', alias: config.prefixes, children: [
         { name:'hello', controller: Hello, alias: ['hello', 'hi', 'hey', 'hoi'], children: [] },
         { name:'help', controller: Help, alias: ['help', 'h'], children: [] },
