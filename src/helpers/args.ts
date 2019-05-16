@@ -19,9 +19,19 @@ export class ArgsModel {
 
 export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : ArgsModel {
     let model = new ArgsModel();
+    let flags = [];
+    for(let x = 0; x < ArgOptions.length; x++) {
+        for(let b = 0; b < ArgOptions[x].flags.length; b++) {
+            flags.push(ArgOptions[x].flags[b]);
+        }
+    }
     
     for(let i = 0; i < ArgOptions.length; i++) {
-        let Option = ArgOptions[i];
+        let Option : ArgParseOptions = {
+            name: ArgOptions[i].name,
+            getValue: ArgOptions[i].getValue,
+            flags: ArgOptions[i].flags
+        }
         model.values.push(Option);
 
         if (!ArgExists(Option.flags, message)) {
@@ -32,8 +42,14 @@ export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : Args
         Option.exists = true;
 
         if (Option.getValue) {
-            Option.value = ArgGetValue(Option.flags, message);
-            continue;
+            let value = ArgGetValue(Option.flags, message);
+            if (flags.indexOf(value) >= 0) { 
+                continue;
+            }
+            else {
+                Option.value = value
+                continue;
+            }
         }
         else {
             continue;
@@ -50,13 +66,13 @@ export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : Args
  * @param message message to search on
  * 
  */
-function ArgGetValue(flags: string[], message: string) : string {
+function ArgGetValue(flags: String[], message: string) : string {
     for (var i = 0; i < flags.length; i++) {
         let flag = flags[i];
         if (message.indexOf(' '+flag+' ') >= 0) {
             let index = message.indexOf(' '+flag+' ');
             let messageSplit = message.split(' ');
-            let splitIndex = messageSplit.indexOf(flag);
+            let splitIndex = messageSplit.indexOf(flag.valueOf());
             if (messageSplit[splitIndex+1]) {
                 if (messageSplit[splitIndex+1] 
                     && !messageSplit[splitIndex+1].startsWith("'")) {
@@ -83,11 +99,11 @@ function ArgGetValue(flags: string[], message: string) : string {
  * @param message message to search on
  * 
  */
-function ArgExists(flags: string[], message: string) : boolean {
+function ArgExists(flags: String[], message: string) : boolean {
     for (var i = 0; i < flags.length; i++) {
         let flag = flags[i];
         let messasgeSplit = message.split(' ');
-        let indexOf = messasgeSplit.indexOf(flag) 
+        let indexOf = messasgeSplit.indexOf(flag.valueOf()) 
         if (indexOf >= 0) {
             return true;
         }

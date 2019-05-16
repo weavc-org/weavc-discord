@@ -15,7 +15,7 @@ var router:Router;
 
 client.on('ready', () => {
 	config.prefixes.push('<@'+client.user.id+'>');
-	router = new Router(Routes);
+
 	console.log(`Logged in as ${client.user.tag}!`);
 
 	// process.on('uncaughtException', function(err) {
@@ -25,6 +25,7 @@ client.on('ready', () => {
 
 client.on('message', (msg: Message) => {
 	if (msg.content.toLowerCase() == "good bot") return msg.reply("good human");
+	router = new Router(Routes);
 	router.Go(msg, client);
 });
 

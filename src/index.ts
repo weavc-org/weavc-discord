@@ -38,7 +38,7 @@ export interface RouteController {
 
 export interface ArgParseOptions {
     name: string;
-    flags: string[];
+    flags: String[];
     exists?: boolean;
     getValue?: boolean;
     value?: string;
