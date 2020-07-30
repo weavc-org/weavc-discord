@@ -1,7 +1,5 @@
 ## mogo-discord
 
-[![NPM](https://nodei.co/npm/mogo-discord.png)](https://nodei.co/npm/mogo-discord/)
-
 Works inline with `discord.js` to provide some helpers preform some common tasks when writing discord bots. 
 
 #### Usage
