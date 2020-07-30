@@ -1,34 +1,24 @@
 {
-  "name": "weav-discord",
-  "version": "2.0.1",
+  "name": "mogo-discord",
+  "version": "1.0.0",
   "description": "",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "author": "Chris Weaver",
+  "author": "mogolade",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ChrisWeaver1/weav-discord"
+    "url": "https://github.com/mogolade/mogo-discord"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p .",
     "prepare": "npm run build",
-    "build:ts": "tsc -p examples/typescript",
-    "start": "tsc && tsc -p examples/typescript && node examples/typescript/src/bot.js",
-    "config": "echo '{\"token\":\"\",\"prefixes\":[]}' > examples/config.json",
-    "start:js": "node examples/javascript/bot.js",
-    "docker:build": "docker build . -t weav-discord",
-    "docker:run": "docker run -d --name weav-discord weav-discord",
-    "docker:run-attached": "docker run --name weav-discord weav-discord",
-    "docker:stop": "docker container stop weav-discord",
-    "docker:remove": "docker container rm weav-discord",
-    "docker": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run",
-    "docker:attached": "npm run docker:build && npm run docker:stop; npm run docker:remove; npm run docker:run-attached"
+    "example": "npm run build && tsc -p ./example && node ./dist/main.js"
   },
   "dependencies": {
-    "@types/node": "^10.12.9",
-    "discord.js": "^11.4.2",
-    "typescript": "^2.9.2"
+    "@types/node": "^10.17.28",
+    "discord.js": "^12.1.1",
+    "typescript": "^3.9.7"
   },
   "keywords": [
     "discord",
@@ -36,7 +26,6 @@
     "framework",
     "router",
     "paging",
-    "arguments",
-    "controller"
+    "arguments"
   ]
 }

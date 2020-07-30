@@ -1,7 +1,7 @@
-import { ArgParseOptions } from "..";
+import { ArgParser, ArgParserValues } from "..";
 
 export class ArgsModel {
-    values: ArgParseOptions[] = [];
+    values: ArgParserValues[] = [];
 
     getExists(name: string) : boolean {
         let element = this.values.find(o => o.name == name);
@@ -14,10 +14,9 @@ export class ArgsModel {
         if (!element) return undefined;
         else return element.value;
     }    
-
 }
 
-export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : ArgsModel {
+export function ParseArgs(message: string, ArgOptions: ArgParser[]) : ArgsModel {
     let model = new ArgsModel();
     let flags = [];
     for(let x = 0; x < ArgOptions.length; x++) {
@@ -27,27 +26,27 @@ export function ParseArgs(message: string, ArgOptions: ArgParseOptions[]) : Args
     }
     
     for(let i = 0; i < ArgOptions.length; i++) {
-        let Option : ArgParseOptions = {
+        let arg : ArgParserValues = {
             name: ArgOptions[i].name,
             getValue: ArgOptions[i].getValue,
             flags: ArgOptions[i].flags
         }
-        model.values.push(Option);
+        model.values.push(arg);
 
-        if (!ArgExists(Option.flags, message)) {
-            Option.exists = false;
+        if (!ArgExists(arg.flags, message)) {
+            arg.exists = false;
             continue;
         }
 
-        Option.exists = true;
+        arg.exists = true;
 
-        if (Option.getValue) {
-            let value = ArgGetValue(Option.flags, message);
+        if (arg.getValue) {
+            let value = ArgGetValue(arg.flags, message);
             if (flags.indexOf(value) >= 0) { 
                 continue;
             }
             else {
-                Option.value = value
+                arg.value = value
                 continue;
             }
         }

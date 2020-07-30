@@ -2,120 +2,79 @@ import { Message, Client } from "discord.js";
 import { Route } from "..";
 import { ParseArgs } from "./args";
 
-
-/**
- * @name Router
- * @class
- * @description
- * Handles routing between discord client and given controller routes.
- * 
- * @param {iRoute[]} Routes - Routes to controllers
- * @param {String[]} Prefixes - Array of accepted prefixes for this instance
- */
 export class Router {
 	
-	Routes: Array<Route> = [];
+	Routes: Route[] = [];
 
-	constructor(Routes: Array<Route>) {
-		this.Routes = Routes;
+	constructor(routes: Route[]) {
+		this.Routes = routes;
 	}
 
-	/**
-	 * @name Go
-	 * @description
-	 * Selects the matching route and passes on request to the matched controller
-	 * 
-	 * @param {Message} MessageRequest Full message class, recieved from discord server
-	 * @param {Client} Client Class detailing the bot you are currently logged in as
-	 */
-	Go(MessageRequest: Message, Client: Client) {
+	async Go(message: Message) {
+		return new Promise<any> (async (resolve) => {
+			let m = message.content.split(' ');
+			let route = await this.findRoute(m, this.Routes, undefined);
+			
+			if (!route) return resolve();
 
-		var Message = [];
-		var split = MessageRequest.content.split(' ');
-		if (split) Message = split;
-
-		this.Routes.forEach(Route => {
-			if (Route.alias.some((alias) => alias.toLowerCase() == Message[0].toLowerCase())) {
-				this.SelectedRoute(Route, Message, 1).then(
-					(R: Route) => {
-						if (R.argOptions) {
-							// needs documenting
-							if (R.argOptions.find(opt => opt.name == '!default')) {
-								R.argOptions.find(opt => opt.name == '!default').flags=R.alias;
-							}
-							let Args = ParseArgs(MessageRequest.content, R.argOptions);
-							return R.controller(Message, MessageRequest, Client, Args);
-						}
-						else {
-							return R.controller(Message, MessageRequest, Client);
-						}
-					}, () => {
-						return;
-					}
-				).catch((err) => {
-					console.log(err)
-				});
-			}
-		})
-	}
-
-	/**
-	 * @name SelectedRoute
-	 * @description 
-	 * Manages child routes, once all matching have been found the last will be sent back to Go for execution
-	 * 
-	 * @param {iRoute} Route 
-	 * @param {String[]} Message 
-	 * @param {number} Index 
-	 * 
-	 * @returns {Promise<iRoute>}
-	 */
-	private SelectedRoute(Route: Route, Message: String[], Index: number) : Promise<Route> {
-		return new Promise<Route> ((resolve, reject)=> {
-			if (Message[Index] == undefined) { return resolve(Route); }
-			if (Route.children != undefined && Route.children.length > 0) {
-				this.GetDefaultChild(Route).then((Selected)=>{
-					
-					Route.children.forEach(RouteChild => {
-						if (RouteChild.alias.some((a) => a.toLowerCase() == Message[Index].toLowerCase())) {
-							Selected = RouteChild;
-						}
-					})
-					if (Selected) {
-						this.SelectedRoute(Selected, Message, Index+1).then(
-							(R: Route) => {
-								return resolve(R);
-							}, () => {
-								return;
-							}
-						).catch((err) => {
-							console.log(err)
-						});
-					}
-					else {
-						reject();
-					}
-				}).catch((err)=> console.log(err));
+			if (route.args) {
+				let defaultArg = route.args.find(opt => opt.name == '[default]');
+				if (defaultArg) {
+					defaultArg.flags = route.alias;
+				}
+	
+				let args = ParseArgs(message.content, route.args);
+				route.handler(message, message.client, args);
 			}
 			else {
-				return resolve(Route);
+				route.handler(message, message.client);
 			}
-		})
+
+			return resolve();
+		});
 	}
 
-	/**
-	 * @name GetDefaultChild
-	 * @description Finds the default child and returns it
-	 * 
-	 * @param {iRoute} Route
-	 * @returns {Promeise<iRoute>} 
-	 */
-	private GetDefaultChild(Route: Route) : Promise<Route> {
-		return new Promise<Route> ((resolve, reject) => {
-			Route.children.forEach((RouteChild) => {
-				if (RouteChild.default == true) return resolve(RouteChild);
-			});
+	async findRoute(message: string[], routes: Route[], currentRoute?: Route) : Promise<Route> {
+		return new Promise<Route> (async (resolve) => {
+
+			if (message == undefined || message.length <= 0) {
+				if (currentRoute  != undefined) {
+					return resolve(await this.defaultChild(currentRoute));		
+				}
+				return resolve(undefined);
+			}
+
+			for (let i = 0; i < routes.length; i++) {
+				let route = routes[i];
+				let match = route.alias.some((alias) => alias.toLowerCase() == message[0].toLowerCase())
+				if (match) {
+					if (route.children != undefined && route.children.length > 0) {
+						message.splice(0, 1)
+						return resolve(await this.findRoute(message, route.children, route));
+					}
+					else {
+						return resolve(route);
+					}
+				}
+			}
+
+			if (currentRoute != undefined) {
+				return resolve(await this.defaultChild(currentRoute));		
+			}
+
 			return resolve(undefined);
+		});
+	}
+
+	async defaultChild(route: Route) : Promise<Route> {
+		return new Promise<Route> ((resolve) => {
+			for (let i = 0; i < route.children.length; i++) {
+				let child = route.children[i];
+				if (child.default == true) { 
+					return resolve(child);
+				}
+			}
+			return resolve(route);
 		})
 	}
 }

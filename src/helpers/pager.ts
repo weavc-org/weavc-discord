@@ -1,18 +1,8 @@
-import { Message, Client, MessageReaction, User, RichEmbed } from "discord.js";
+import { Message, Client, MessageReaction, User, MessageEmbed, CollectorFilter } from "discord.js";
 
-/**
- * @name Pager
- * @description 
- * Handles embed paging, allowing the user to control which pages they are viewing via reactions
- * @param {Message} msg - Message Model from users request, content, channel, guild etc
- * @param {Client} Client - Bots client class, contains information about the logged in bot 
- * @param {Array<RichEmbed>} Embeds - Embeds to page through
- * @param {PagingOptions} Options - Options to allow control over certain aspects of Paging functionality 
- */
-export function Pager(MessageRequest: Message, Client: Client, Embeds: Array<RichEmbed>, Options: PagingOptions = null) {
+export function Pager(MessageRequest: Message, Client: Client, Embeds: Array<MessageEmbed>, Options: PagingOptions = null) {
     
     var m = MessageRequest.content.split(' ');
-	let prefix = m.shift();
 
     if (Options == null || Options == undefined) {
         Options = new PagingOptions();
@@ -23,66 +13,52 @@ export function Pager(MessageRequest: Message, Client: Client, Embeds: Array<Ric
     MessageRequest.channel.send(Embeds[page-1])
         .then(function (message: Message) {
             
-            message.react("⬅").then((r) => {
-                message.react("➡");
-            });
+            message.react("⬅");
+            message.react("➡");
 
+            var react = (reaction, user) => message.id == reaction.message.id && user.id != Client.user.id;
             if (!Options.allowallreactions) {
-                var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && user.id == MessageRequest.author.id && message.id == reaction.message.id;
-                var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && user.id == MessageRequest.author.id && message.id == reaction.message.id;
-            }
-            else {
-                var forwardreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "➡" && message.id == reaction.message.id && user.id != Client.user.id;
-                var backreact = (reaction: MessageReaction, user: User) => reaction.emoji.name === "⬅" && message.id == reaction.message.id && user.id != Client.user.id;
+                var react = (reaction, user) => user.id === MessageRequest.author.id && message.id == reaction.message.id;
             }
 
-            var back = message.createReactionCollector(backreact, { time: Options.timeout.valueOf() });
-            var forward = message.createReactionCollector(forwardreact, { time: Options.timeout.valueOf() });
+            var collector = message.createReactionCollector(react, { time: Options.timeout.valueOf() });
 
-            back.on('collect', (r) => {
-                page--;
-                if (page <= Embeds.length && page >= 1) { 
-                    message.edit(Embeds[page-1]);
-                }
-                else {
+            let h = (r: MessageReaction, u: User) => {
+                if (r.emoji.name == "➡") {
                     page++;
+                    if (page <= Embeds.length && page >= 1) { 
+                        r.message.edit(Embeds[page-1]);
+                    }
+                    else {
+                        page--;
+                    }
                 }
-            })
-
-            forward.on('collect', (r) => {
-                page++;
-                if (page <= Embeds.length && page >= 1) { 
-                    message.edit(Embeds[page-1]);
-                }
-                else {
+                else if (r.emoji.name == "⬅") {
                     page--;
+                    if (page <= Embeds.length && page >= 1) { 
+                        r.message.edit(Embeds[page-1]);
+                    }
+                    else {
+                        page++;
+                    }
                 }
-            })
+            }
+
+            collector.on('collect', h)
 
             // triggers 'collect' event on removal of reaction
-            Client.on('messageReactionRemove', (reaction, user) => { 
+            Client.on('messageReactionRemove', (reaction, user : User) => { 
+                if (!collector.ended && collector.filter(reaction, user)) { h(reaction, user) }
                 if (Options.reactionremoval) {
-                    if (!back.ended && back.filter(reaction, user)) { back.emit('collect'); }
-                    if (!forward.ended && forward.filter(reaction, user)) { forward.emit('collect'); }
                 }
             });
 
-            forward.on('end', (s, reason) => {
+            collector.on('end', (s, reason) => {
                 if (Options.timeoutdelete) {
                     message.delete().then((m) => {
                         return;
                     }).catch((err)=> {
                         
-                    });
-                }
-            })
-
-            back.on('end', (s, reason) => {
-                if (Options.timeoutdelete) {
-                    message.delete().then((m) => {
-                        return;
-                    }).catch((err)=> {
-
                     });
                 }
             })
