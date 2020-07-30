@@ -1,5 +1,5 @@
 {
-  "name": "mogo-discord",
+  "name": "@mogolade/mogo-discord",
   "version": "0.0.1",
   "description": "",
   "main": "lib/index.js",
