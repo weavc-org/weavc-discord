@@ -1,6 +1,6 @@
 tsconfig.json
+src/
 example/
 dist/
 .vscode/
-Dockerfile
-.dockerignore
+.github/
