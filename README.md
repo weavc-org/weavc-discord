@@ -5,7 +5,7 @@ Works inline with `discord.js` to provide some helpers preform some common tasks
 #### Usage
 
 ```
-npm i mogo-discord
+npm install @mogolade/mogo-discord@0.0.1
 ```
 
 #### Examples 
