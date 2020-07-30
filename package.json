@@ -10,6 +10,9 @@
     "type": "git",
     "url": "https://github.com/mogolade/mogo-discord"
   },
+  "publishConfig": { 
+    "registry": "https://npm.pkg.github.com/" 
+  },
   "scripts": {
     "build": "tsc -p .",
     "prepare": "npm run build",
