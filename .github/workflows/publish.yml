@@ -2,7 +2,7 @@ name: npm-publish
 on:
   release:
     types: [published]
-    
+
 jobs:
   npm-publish:
     
@@ -20,8 +20,6 @@ jobs:
         node-version: 12.x
         registry-url: 'https://npm.pkg.github.com'
         scope: 'mogolade'
-    - run: npm ci
-    - run: npm run build
     - run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
