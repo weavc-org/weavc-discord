@@ -14,7 +14,7 @@
     "registry": "https://npm.pkg.github.com/" 
   },
   "scripts": {
-    "prepare": "npm ci && npm run build",
+    "prepare": "npm run build",
     "build": "tsc -p .",
     "example": "npm run build && tsc -p ./example && node ./dist/main.js"
   },
