@@ -2,7 +2,7 @@
 
 [![NPM](https://nodei.co/npm/mogo-discord.png)](https://nodei.co/npm/mogo-discord/)
 
-Works inline with `discord.js` to provide some helpers preform some common tasks when writing discord bots. 
+There can be implemented alongside `discord.js` to provide a number of utilities includinga router, argument parser and embed pager. 
 
 #### Usage
 
@@ -10,31 +10,43 @@ Works inline with `discord.js` to provide some helpers preform some common tasks
 npm i mogo-discord
 ```
 
-#### Examples 
+#### Router
 
-Can be used to route messages that match specific criteria to a handler function by defining routes:
-```javascript
+The router is used to route incoming messages to different functions to handle the result. Using this is a nice setup from using large amounts of if statements to check and redirect the message. This works much like many http frameworks i.e. `expressjs`, where you setup your routes and when an incoming request comes in that matches the route it is passed to the function. 
+
+The `Router` class takes a routes parameter, this is a list of routes you provide to the router that it uses to make routing decisions and might look like this:
+```
 let routes : Route[] = [
     { name: 'prefix', alias: ['mogo', 'mogolade'], children: [
         { name: 'welcome', alias: ['hello', 'hi', 'welcome'], handler: grettingsHandler },
         { name: 'github', alias: ['github', 'git'], handler: githubHandler },
         { name: 'code', alias: ['c', 'code'], args: codeArgs, handler: codeHandler, children: [
-            { name: 'code-help', alias: ['help', '--help', '?'], handler: codeUsage },
+            { name: 'code-help', alias: ['help', '--help', '?'], handler: codeUsage, default: true },
         ] }
     ] }
 ]
 
 let router = new Router(routes);
-let client = new Client();
+```
 
-client.login(<token>)
-    .catch((err) => { throw err; });
+A `Route` consists of a number of fields and options:
+- `name`: just a name to identify the route
+- `alias`: an array of strings to match on
+- `handler`: handler function, this is where the message is passed to if it matches the requirements
+- `children`: an array of routes, if the parent route matches, the next part of the message will be checked against the children
+- `args`: an array of `ArgParser`s, used to identify flags, arguments and values inside a message, these will be passed to the handler
+- `default`: if no routes match, but there is a default child, this will be used without alias' matching
 
+Once the `Router` class has been initialized you can pass incoming messages to it like so:
+```
 client.on('message', (message: Message) => { router.Go(message) });
 ```
 
-Define and get flags & values from messages:
-```javascript
+#### Args
+
+There are a number of ways to parse arguments from a message in this library. It can be done through the router by passing through an array of `ArgParser`'s to the `args` field in a `Route`. This will pass a class to the handler that allows you to find values within a message.
+
+```
 // define flags and values
 // [default] gets the first parameter after the matching route. 
 // [default] only works when parsing through the router & calling ParseArgs directly
@@ -53,7 +65,7 @@ let handler : RouteHandler = (message, client, args) => {
     // incoming message: 'test 'hello world' - t TYPE_1'
 
     let dVal = args.getValue('!default');
-    let cVal = args.getValue('type');
+    let cVal = args.getValue('type');W
 
     // dVal: 'hello world'
     // cVal: 'TYPE_1'
@@ -62,33 +74,38 @@ let handler : RouteHandler = (message, client, args) => {
 }
 ```
 
-Page through embeds using ⬅ ➡ reactions:
-```javascript
-    let m1: MessageEmbed = new MessageEmbed()
-        .setTitle('Page 1')
-        .setColor(0xb5130f)
-        .addField('test field', 'just a field for testing!')
-        .setAuthor(client.user.username, client.user.avatarURL())
-        .setTimestamp(new Date())
+There is also a method called `ParseArgs` exported. This takes the content of a message and an array of `ArgParser`'s, much like the router. It will return the same `ArgsModel` class aswell.
 
-    let m2: MessageEmbed = new MessageEmbed()
-        .setTitle('Page 2')
-        .setColor(0xb5130f)
-        .setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '+
-            'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '+
-            'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in '+
-            'reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint '+
-            'occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
-        .setAuthor(client.user.username, client.user.avatarURL())
-        .setTimestamp(new Date())
+#### Pager
 
-    let m3: MessageEmbed = new MessageEmbed()
-        .setTitle('Page 3')
-        .setColor(0xb5130f)
-        .setAuthor(client.user.username, client.user.avatarURL())
-        .setTimestamp(new Date())
+Useful method the can be used to page through numerous embeds using ⬅ ➡ reactions. This is quite commonly used for help pages or when there is alot of data to display.
 
-    return Pager(message, client, [m1, m2, m3]);
+Its as simple as creating your embeds, do this using `discord.js`'s `MessageEmbed` class, then pass the message you are responding to, client and the array of embeds to the Pager method. there is also a number of options that can be passed though aswell.
+
 ```
+let m1: MessageEmbed = new MessageEmbed()
+    .setTitle('Page 1')
+    .setColor(0xb5130f)
+    .addField('test field', 'just a field for testing!')
+    .setAuthor(client.user.username, client.user.avatarURL())
+    .setTimestamp(new Date())
 
-full context & example found in `example/main.ts`
+let m2: MessageEmbed = new MessageEmbed()
+    .setTitle('Page 2')
+    .setColor(0xb5130f)
+    .setDescription('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor '+
+        'incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation '+
+        'ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in '+
+        'reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint '+
+        'occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.')
+    .setAuthor(client.user.username, client.user.avatarURL())
+    .setTimestamp(new Date())
+
+let m3: MessageEmbed = new MessageEmbed()
+    .setTitle('Page 3')
+    .setColor(0xb5130f)
+    .setAuthor(client.user.username, client.user.avatarURL())
+    .setTimestamp(new Date())
+
+return Pager(message, client, [m1, m2, m3]);
+```
