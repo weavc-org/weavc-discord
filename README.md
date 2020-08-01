@@ -1,7 +1,5 @@
 ## weavc-discord
 
-[![NPM](https://nodei.co/npm/weavc-discord.png)](https://nodei.co/npm/weavc-discord/)
-
 There can be implemented alongside `discord.js` to provide a number of utilities includinga router, argument parser and embed pager. 
 
 #### Usage
