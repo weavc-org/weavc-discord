@@ -7,7 +7,7 @@ There can be implemented alongside `discord.js` to provide a number of utilities
 #### Usage
 
 ```
-npm i mogo-discord
+npm install @mogolade/mogo-discord@0.0.1
 ```
 
 #### Router
