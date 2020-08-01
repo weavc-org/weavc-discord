@@ -9,12 +9,12 @@ let grettingsHandler : RouteHandler = (message, client) => {
 }
 
 let githubHandler : RouteHandler = (message, client) => {
-    return message.reply('https://github.com/mogolade/mogo-discord');
+    return message.reply('https://github.com/weavc/weavc-discord');
 }
 
 let codeHandler : RouteHandler = (message, client, args) => {
     
-    // example message: 'mogo code 'console.log('hello world')' -t javascript'
+    // example message: 'weavc code 'console.log('hello world')' -t javascript'
     
     // using small subset of actual valid types
     let validTypes = ['css', 'javascript', 'html', 'python']
@@ -36,7 +36,7 @@ let codeHandler : RouteHandler = (message, client, args) => {
 }
 
 let codeUsage : RouteHandler = (message, client, args) => {
-    return message.reply("```Usage:\nmogo code '<code body>' -t <type>"+
+    return message.reply("```Usage:\nweavc code '<code body>' -t <type>"+
         "\nvalid types: css, javascript, html, python```")
 }
 
@@ -74,7 +74,7 @@ let codeArgs : ArgParser[] = [
 ]
 
 let routes : Route[] = [
-    { name: 'prefix', alias: ['mogo', 'mogolade'], children: [
+    { name: 'prefix', alias: ['weav', 'weavc'], children: [
         { name: 'welcome', alias: ['hello', 'hi', 'welcome'], handler: grettingsHandler },
         { name: 'github', alias: ['github', 'git'], handler: githubHandler },
         { name: 'pager', alias: ['pager'], handler: pagerHandler },

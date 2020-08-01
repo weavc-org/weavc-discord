@@ -1,13 +1,13 @@
-## mogo-discord
+## weavc-discord
 
-[![NPM](https://nodei.co/npm/mogo-discord.png)](https://nodei.co/npm/mogo-discord/)
+[![NPM](https://nodei.co/npm/weavc-discord.png)](https://nodei.co/npm/weavc-discord/)
 
 There can be implemented alongside `discord.js` to provide a number of utilities includinga router, argument parser and embed pager. 
 
 #### Usage
 
 ```
-npm install @mogolade/mogo-discord@0.0.1
+npm install @weavc/weavc-discord@0.0.1
 ```
 
 #### Router
@@ -17,7 +17,7 @@ The router is used to route incoming messages to different functions to handle t
 The `Router` class takes a routes parameter, this is a list of routes you provide to the router that it uses to make routing decisions and might look like this:
 ```
 let routes : Route[] = [
-    { name: 'prefix', alias: ['mogo', 'mogolade'], children: [
+    { name: 'prefix', alias: ['weav', 'weavc'], children: [
         { name: 'welcome', alias: ['hello', 'hi', 'welcome'], handler: grettingsHandler },
         { name: 'github', alias: ['github', 'git'], handler: githubHandler },
         { name: 'code', alias: ['c', 'code'], args: codeArgs, handler: codeHandler, children: [
